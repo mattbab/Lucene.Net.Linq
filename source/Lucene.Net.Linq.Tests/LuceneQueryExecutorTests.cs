@@ -1,4 +1,3 @@
-using System;
 using Lucene.Net.Documents;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Store;
@@ -29,7 +28,7 @@ namespace Lucene.Net.Linq.Tests
         [Test]
         public void ConvertDocument()
         {
-            var capturedKey = (IDocumentKey) null;
+            var capturedKey = (IDocumentKey)null;
             var record = new Record();
             ObjectLookup<Record> lookup = k => { capturedKey = k; return record; };
 
@@ -52,12 +51,12 @@ namespace Lucene.Net.Linq.Tests
         public void GetDocumentKey_ConvertToObjectThenToKey()
         {
             var key = new DocumentKey();
-            
+
             mapper.Expect(m => m.ToObject(document, context, record));
             mapper.Expect(m => m.ToKey(record)).Return(key);
 
             mapper.Replay();
-            
+
             var result = executor.GetDocumentKey(document, context);
 
             Assert.That(result, Is.SameAs(key));
@@ -71,7 +70,7 @@ namespace Lucene.Net.Linq.Tests
             executor = new TestableLuceneQueryExecutor<Record>(new Context(new RAMDirectory(), new object()), _ => record, enhancedMapper);
 
             var key = new DocumentKey();
-            
+
             enhancedMapper.Expect(m => m.ToKey(document)).Return(key);
 
             enhancedMapper.Replay();
@@ -82,9 +81,10 @@ namespace Lucene.Net.Linq.Tests
             enhancedMapper.VerifyAllExpectations();
         }
 
-        class TestableLuceneQueryExecutor<T> : LuceneQueryExecutor<T>
+        private class TestableLuceneQueryExecutor<T> : LuceneQueryExecutor<T>
         {
-            public TestableLuceneQueryExecutor(Context context, ObjectLookup<T> newItem, IDocumentMapper<T> mapper) : base(context, newItem, mapper)
+            public TestableLuceneQueryExecutor(Context context, ObjectLookup<T> newItem, IDocumentMapper<T> mapper)
+                : base(context, newItem, mapper)
             {
             }
 

@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Transformation.TreeVisitors;
 using NUnit.Framework;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 {

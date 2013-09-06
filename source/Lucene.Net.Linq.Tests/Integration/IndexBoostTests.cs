@@ -1,8 +1,8 @@
-using System;
-using System.Linq;
 using Lucene.Net.Analysis;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System;
+using System.Linq;
 
 namespace Lucene.Net.Linq.Tests.Integration
 {

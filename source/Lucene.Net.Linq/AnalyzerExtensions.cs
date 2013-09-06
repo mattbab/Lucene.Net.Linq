@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Lucene.Net.Analysis;
+using System;
 using System.Linq.Expressions;
-using Lucene.Net.Analysis;
 
 namespace Lucene.Net.Linq
 {

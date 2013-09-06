@@ -1,6 +1,6 @@
-﻿using System;
-using Lucene.Net.Linq.Fluent;
+﻿using Lucene.Net.Linq.Fluent;
 using Lucene.Net.Linq.Tests.Integration;
+using System;
 using Version = Lucene.Net.Util.Version;
 
 namespace Sample

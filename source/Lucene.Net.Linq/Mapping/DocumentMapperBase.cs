@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Linq.Analysis;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Version = Lucene.Net.Util.Version;
 
 namespace Lucene.Net.Linq.Mapping
@@ -132,7 +132,7 @@ namespace Lucene.Net.Linq.Mapping
         {
             if (EnableScoreTracking)
             {
-                context.Searcher.SetDefaultFieldSortScoring(true, false);    
+                context.Searcher.SetDefaultFieldSortScoring(true, false);
             }
         }
 
@@ -185,7 +185,7 @@ namespace Lucene.Net.Linq.Mapping
         {
             if (val1 is IEnumerable && val2 is IEnumerable)
             {
-                return ((IEnumerable) val1).Cast<object>().SequenceEqual(((IEnumerable) val2).Cast<object>());
+                return ((IEnumerable)val1).Cast<object>().SequenceEqual(((IEnumerable)val2).Cast<object>());
             }
 
             return Equals(val1, val2);
@@ -201,6 +201,5 @@ namespace Lucene.Net.Linq.Mapping
             fieldMap.Add(fieldMapper.PropertyName, fieldMapper);
             keyFields.Add(fieldMapper);
         }
-
     }
 }

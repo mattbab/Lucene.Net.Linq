@@ -21,7 +21,7 @@ namespace Lucene.Net.Linq.Mapping
         /// Property name.
         /// </summary>
         string PropertyName { get; }
-        
+
         /// <summary>
         /// In cases of complex types or numeric fields,
         /// converts a value into a query expression.

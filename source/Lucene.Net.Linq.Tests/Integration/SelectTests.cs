@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Linq.Analysis;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Lucene.Net.Linq.Tests.Integration
 {
@@ -23,7 +22,7 @@ namespace Lucene.Net.Linq.Tests.Integration
         [Test]
         public void Select()
         {
-            var d = new SampleDocument {Name = "My Document"};
+            var d = new SampleDocument { Name = "My Document" };
             AddDocument(d);
 
             var documents = provider.AsQueryable<SampleDocument>();
@@ -34,7 +33,7 @@ namespace Lucene.Net.Linq.Tests.Integration
         }
 
         [DocumentKey(FieldName = "FixedKey", Value = "SampleDocument")]
-        class AlternateDocument
+        private class AlternateDocument
         {
             [Field(Key = true)]
             public string Key { get; set; }
@@ -65,7 +64,7 @@ namespace Lucene.Net.Linq.Tests.Integration
         {
             const int scalar = 99;
 
-            var d = new SampleDocument {Name = "a", NullableScalar = scalar};
+            var d = new SampleDocument { Name = "a", NullableScalar = scalar };
 
             AddDocument(d);
 
@@ -80,7 +79,7 @@ namespace Lucene.Net.Linq.Tests.Integration
         public void Where()
         {
             AddDocument(new SampleDocument { Name = "Other Document" });
-            AddDocument(new SampleDocument { Name = "My Document", NullableScalar = 12});
+            AddDocument(new SampleDocument { Name = "My Document", NullableScalar = 12 });
 
             var documents = provider.AsQueryable<SampleDocument>();
 
@@ -97,10 +96,10 @@ namespace Lucene.Net.Linq.Tests.Integration
 
             var documents = provider.AsQueryable<SampleDocument>();
 
-// Not redundant because it generates a different Expression tree
-// ReSharper disable RedundantBoolCompare
+            // Not redundant because it generates a different Expression tree
+            // ReSharper disable RedundantBoolCompare
             var result = from doc in documents where doc.Flag == true select doc;
-// ReSharper restore RedundantBoolCompare
+            // ReSharper restore RedundantBoolCompare
 
             Assert.That(result.Single().Name, Is.EqualTo("My Document"));
         }
@@ -164,7 +163,7 @@ namespace Lucene.Net.Linq.Tests.Integration
 
         private ConvertedDocument Convert(SampleDocument doc)
         {
-            return new ConvertedDocument {Name = doc.Name};
+            return new ConvertedDocument { Name = doc.Name };
         }
 
         [Test]
@@ -247,7 +246,7 @@ namespace Lucene.Net.Linq.Tests.Integration
 
             Assert.That(result.Single().Name, Is.EqualTo("My Document"));
         }
-        
+
         [Test]
         public void Where_Keyword_StartsWith()
         {
@@ -334,7 +333,7 @@ namespace Lucene.Net.Linq.Tests.Integration
             AddDocument(new SampleDocument { Name = "My Document", NullableScalar = 12 });
 
             var documents = provider.AsQueryable<SampleDocument>();
-            
+
             var result = from doc in documents where (bool)(!((bool?)doc.Name.StartsWith("other"))) select doc;
 
             Assert.That(result.Single().Name, Is.EqualTo("My Document"));
@@ -425,7 +424,7 @@ namespace Lucene.Net.Linq.Tests.Integration
         [Test]
         public void Where_ScalarNotEqual()
         {
-            AddDocument(new SampleDocument { Name = "Other Document", NullableScalar = 11});
+            AddDocument(new SampleDocument { Name = "Other Document", NullableScalar = 11 });
             AddDocument(new SampleDocument { Name = "My Document", NullableScalar = 12 });
 
             var documents = provider.AsQueryable<SampleDocument>();
@@ -434,7 +433,6 @@ namespace Lucene.Net.Linq.Tests.Integration
 
             Assert.That(result.Single().NullableScalar, Is.EqualTo(12));
         }
-
 
         [Test]
         public void Where_ScalarNotNull()
@@ -500,7 +498,5 @@ namespace Lucene.Net.Linq.Tests.Integration
 
             Assert.That(result.Single().Name, Is.EqualTo("Other Document"));
         }
-
     }
- 
 }

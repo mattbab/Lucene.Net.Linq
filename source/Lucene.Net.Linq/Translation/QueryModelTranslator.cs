@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using Lucene.Net.Linq.Clauses;
+﻿using Lucene.Net.Linq.Clauses;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Linq.Translation.ResultOperatorHandlers;
 using Lucene.Net.Linq.Translation.TreeVisitors;
 using Lucene.Net.Search;
 using Remotion.Linq;
 using Remotion.Linq.Clauses;
+using System.Linq;
 
 namespace Lucene.Net.Linq.Translation
 {
@@ -27,10 +27,10 @@ namespace Lucene.Net.Linq.Translation
         public void Build(QueryModel queryModel)
         {
             queryModel.Accept(this);
-            
+
             if (context.Settings.EnableMultipleEntities)
             {
-                CreateQueryFilterForKeyFields();    
+                CreateQueryFilterForKeyFields();
             }
         }
 
@@ -43,7 +43,7 @@ namespace Lucene.Net.Linq.Translation
         {
             var visitor = new QueryBuildingExpressionTreeVisitor(fieldMappingInfoProvider);
             visitor.VisitExpression(whereClause.Predicate);
-            
+
             model.AddQuery(visitor.Query);
         }
 
@@ -87,18 +87,18 @@ namespace Lucene.Net.Linq.Translation
         {
             model.DocumentTracker = trackRetrievedDocumentsClause.Tracker.Value;
         }
-        
+
         private void CreateQueryFilterForKeyFields()
         {
             var filterQuery = fieldMappingInfoProvider.KeyProperties.Aggregate(
                 new BooleanQuery(),
                 (query, property) =>
-                    {
-                        var fieldMappingInfo = fieldMappingInfoProvider.GetMappingInfo(property);
-                        
-                        query.Add(fieldMappingInfo.CreateQuery("*"), Occur.MUST);
-                        return query;
-                    });
+                {
+                    var fieldMappingInfo = fieldMappingInfoProvider.GetMappingInfo(property);
+
+                    query.Add(fieldMappingInfo.CreateQuery("*"), Occur.MUST);
+                    return query;
+                });
 
             if (filterQuery.Clauses.Any())
             {

@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using NUnit.Framework;
+using System.Linq;
 using Version = System.Version;
 
 namespace Lucene.Net.Linq.Tests.Integration
@@ -77,7 +77,7 @@ namespace Lucene.Net.Linq.Tests.Integration
 
             var result = from d in documents orderby d.Flag select d.Flag;
 
-            Assert.That(result.ToArray(), Is.EqualTo(new [] { false, true, true }));
+            Assert.That(result.ToArray(), Is.EqualTo(new[] { false, true, true }));
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace Lucene.Net.Linq.Tests.Integration
 
             var result = from d in documents where d.Name == "apple" orderby d.Score() select d.Scalar;
 
-            Assert.That(result.ToArray(), Is.EqualTo(new[] {3, 2, 1}));
+            Assert.That(result.ToArray(), Is.EqualTo(new[] { 3, 2, 1 }));
         }
 
         [Test]
@@ -153,6 +153,7 @@ namespace Lucene.Net.Linq.Tests.Integration
 
             Assert.That(result.ToArray(), Is.EqualTo(new[] { 1, 2, 3 }));
         }
+
         [Test]
         public void OrderBy_Score_ExtensionMethod()
         {

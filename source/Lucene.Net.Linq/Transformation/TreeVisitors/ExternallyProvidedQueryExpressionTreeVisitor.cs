@@ -1,8 +1,8 @@
-using System.Linq.Expressions;
-using System.Reflection;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Search;
 using Remotion.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {
@@ -20,7 +20,7 @@ namespace Lucene.Net.Linq.Transformation.TreeVisitors
 
         protected override Expression VisitSupportedMethodCallExpression(MethodCallExpression expression)
         {
-            return new LuceneQueryExpression((Query) ((ConstantExpression)expression.Arguments[0]).Value);
+            return new LuceneQueryExpression((Query)((ConstantExpression)expression.Arguments[0]).Value);
         }
     }
 }

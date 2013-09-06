@@ -1,10 +1,10 @@
-using System;
-using System.Linq.Expressions;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Transformation.TreeVisitors;
 using Lucene.Net.Search;
 using NUnit.Framework;
 using Remotion.Linq;
+using System;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 {
@@ -23,12 +23,12 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
         public void Stage0_Transform()
         {
             var methodInfo = ReflectionUtility.GetMethod(() => LuceneMethods.Boost<string>(null, 0f));
-            var fieldExpression = new LuceneQueryFieldExpression(typeof (string), "Name");
+            var fieldExpression = new LuceneQueryFieldExpression(typeof(string), "Name");
             const float boostAmount = 5.5f;
 
             // LuceneField(Name).Boost(5.5)
             var call = Expression.Call(methodInfo, fieldExpression, Expression.Constant(boostAmount));
-            
+
             var result = visitor.VisitExpression(call);
 
             Assert.That(result, Is.SameAs(fieldExpression));

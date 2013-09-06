@@ -1,7 +1,7 @@
-using System;
-using System.Linq.Expressions;
 using Remotion.Linq.Clauses.Expressions;
 using Remotion.Linq.Parsing;
+using System;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Clauses.Expressions
 {
@@ -29,6 +29,7 @@ namespace Lucene.Net.Linq.Clauses.Expressions
         }
 
         public string FieldName { get { return fieldName; } }
+
         public float Boost { get; set; }
 
         public bool Equals(LuceneQueryFieldExpression other)
@@ -42,8 +43,8 @@ namespace Lucene.Net.Linq.Clauses.Expressions
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (LuceneQueryFieldExpression)) return false;
-            return Equals((LuceneQueryFieldExpression) obj);
+            if (obj.GetType() != typeof(LuceneQueryFieldExpression)) return false;
+            return Equals((LuceneQueryFieldExpression)obj);
         }
 
         public override int GetHashCode()

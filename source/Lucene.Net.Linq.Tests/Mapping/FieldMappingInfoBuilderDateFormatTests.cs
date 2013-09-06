@@ -1,9 +1,9 @@
-using System;
-using System.Linq.Expressions;
-using System.Reflection;
 using Lucene.Net.Documents;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Tests.Mapping
 {
@@ -37,7 +37,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
         public DateTimeOffset? OptionalTimeStampOffset { get; set; }
 
         [Test]
-        public void MonoParseDateTimeOffset ()
+        public void MonoParseDateTimeOffset()
         {
             DateTimeOffset.ParseExact("2013-01-02T03:40:50", "yyyy-MM-ddTHH:mm:ss", null, System.Globalization.DateTimeStyles.AssumeUniversal);
         }
@@ -60,9 +60,8 @@ namespace Lucene.Net.Linq.Tests.Mapping
             }
             else
             {
-                Assert.That(prop.GetValue(this, null), Is.EqualTo(ts));    
+                Assert.That(prop.GetValue(this, null), Is.EqualTo(ts));
             }
-            
         }
 
         [Test]
@@ -74,7 +73,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
 
             if (Nullable.GetUnderlyingType(prop.PropertyType) == typeof(DateTimeOffset))
             {
-                prop.SetValue(this, new DateTimeOffset(dateTime.ToUniversalTime(), TimeSpan.Zero), null);    
+                prop.SetValue(this, new DateTimeOffset(dateTime.ToUniversalTime(), TimeSpan.Zero), null);
             }
             else
             {
@@ -115,7 +114,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
 
         private IFieldMapper<FieldMappingInfoBuilderDateFormatTests> CreateMapper<T>(Expression<Func<T>> expression)
         {
-            var info = ((MemberExpression) expression.Body).Member;
+            var info = ((MemberExpression)expression.Body).Member;
             return FieldMappingInfoBuilder.Build<FieldMappingInfoBuilderDateFormatTests>((PropertyInfo)info);
         }
 
@@ -124,6 +123,5 @@ namespace Lucene.Net.Linq.Tests.Mapping
             info = GetType().GetProperty(propertyName);
             return FieldMappingInfoBuilder.Build<FieldMappingInfoBuilderDateFormatTests>(info);
         }
-
     }
 }

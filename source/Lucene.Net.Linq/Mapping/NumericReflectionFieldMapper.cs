@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Linq.Search;
 using Lucene.Net.Linq.Util;
 using Lucene.Net.Search;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Mapping
 {
     internal class NumericReflectionFieldMapper<T> : ReflectionFieldMapper<T>
     {
-        private static readonly IEnumerable<Type> supportedValueTypes = new List<Type>{typeof(long), typeof(int), typeof(double), typeof(float)};
+        private static readonly IEnumerable<Type> supportedValueTypes = new List<Type> { typeof(long), typeof(int), typeof(double), typeof(float) };
 
         private readonly TypeConverter typeToValueTypeConverter;
         private readonly int precisionStep;
@@ -77,7 +77,7 @@ namespace Lucene.Net.Linq.Mapping
         {
             const float threshold = 0.002f;
             var diff = Math.Abs(Boost - 1.0f);
-            
+
             if (diff < threshold) return;
 
             numericField.ForceDisableOmitNorms();
@@ -87,8 +87,8 @@ namespace Lucene.Net.Linq.Mapping
         public override string ConvertToQueryExpression(object value)
         {
             value = ConvertToSupportedValueType(value);
-            
-            return ((ValueType) value).ToPrefixCoded();
+
+            return ((ValueType)value).ToPrefixCoded();
         }
 
         public override string EscapeSpecialCharacters(string value)
@@ -103,7 +103,7 @@ namespace Lucene.Net.Linq.Mapping
             {
                 return base.CreateQuery(pattern);
             }
-            
+
             return new TermQuery(new Term(FieldName, pattern));
         }
 

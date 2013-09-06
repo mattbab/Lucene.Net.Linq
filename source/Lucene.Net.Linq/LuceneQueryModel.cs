@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Search;
 using Remotion.Linq.Clauses;
 using Remotion.Linq.Clauses.StreamedData;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
 
 namespace Lucene.Net.Linq
 {
@@ -35,13 +35,19 @@ namespace Lucene.Net.Linq
         }
 
         public Filter Filter { get; set; }
+
         public int MaxResults { get; set; }
+
         public int SkipResults { get; set; }
+
         public bool Last { get; set; }
+
         public bool Aggregate { get; set; }
 
         public Expression SelectClause { get; set; }
+
         public StreamedSequenceInfo OutputDataInfo { get; set; }
+
         public ResultOperatorBase ResultSetOperator { get; private set; }
 
         public object DocumentTracker { get; set; }
@@ -119,7 +125,7 @@ namespace Lucene.Net.Linq
                 {
                     sorts.Add(SortField.FIELD_SCORE);
                 }
-                
+
                 return;
             }
 
@@ -128,7 +134,7 @@ namespace Lucene.Net.Linq
 
             if (expression is LuceneQueryFieldExpression)
             {
-                var field = (LuceneQueryFieldExpression) expression;
+                var field = (LuceneQueryFieldExpression)expression;
                 propertyName = field.FieldName;
             }
             else
@@ -141,7 +147,7 @@ namespace Lucene.Net.Linq
 
             sorts.Add(mapping.CreateSortField(reverse));
         }
-        
+
         public void AddBoostFunction(LambdaExpression expression)
         {
             var scoreFunction = expression.Compile();

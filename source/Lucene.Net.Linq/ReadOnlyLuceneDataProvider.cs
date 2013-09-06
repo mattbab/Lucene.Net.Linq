@@ -1,19 +1,21 @@
-﻿using System;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Linq.Abstractions;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Store;
+using System;
 using Version = Lucene.Net.Util.Version;
 
 namespace Lucene.Net.Linq
 {
     public class ReadOnlyLuceneDataProvider : LuceneDataProvider
     {
-        public ReadOnlyLuceneDataProvider(Directory directory, Version version) : base(directory, version)
+        public ReadOnlyLuceneDataProvider(Directory directory, Version version)
+            : base(directory, version)
         {
         }
 
-        public ReadOnlyLuceneDataProvider(Directory directory, Analyzer externalAnalyzer, Version version) : base(directory, externalAnalyzer, version)
+        public ReadOnlyLuceneDataProvider(Directory directory, Analyzer externalAnalyzer, Version version)
+            : base(directory, externalAnalyzer, version)
         {
         }
 

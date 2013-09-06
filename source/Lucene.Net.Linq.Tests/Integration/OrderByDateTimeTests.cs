@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using Lucene.Net.Store;
+﻿using Lucene.Net.Store;
 using NUnit.Framework;
+using System;
+using System.Linq;
 
 namespace Lucene.Net.Linq.Tests.Integration
 {
@@ -23,9 +23,9 @@ namespace Lucene.Net.Linq.Tests.Integration
             directory = new RAMDirectory();
             provider = new LuceneDataProvider(directory, Net.Util.Version.LUCENE_30);
 
-            AddDocument(new Sample {DateTime = time1});
-            AddDocument(new Sample {DateTime = time2});
-            AddDocument(new Sample {DateTime = time3});
+            AddDocument(new Sample { DateTime = time1 });
+            AddDocument(new Sample { DateTime = time2 });
+            AddDocument(new Sample { DateTime = time3 });
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace Lucene.Net.Linq.Tests.Integration
 
             var result = from d in documents orderby d.DateTime select d.DateTime;
 
-            var sorted = new[] {time1, time2, time3}.OrderBy(t => t).ToArray();
+            var sorted = new[] { time1, time2, time3 }.OrderBy(t => t).ToArray();
 
             Assert.That(result.ToArray(), Is.EqualTo(sorted));
         }

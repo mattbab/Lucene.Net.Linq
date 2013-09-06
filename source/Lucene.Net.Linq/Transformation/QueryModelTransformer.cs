@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using Common.Logging;
+﻿using Common.Logging;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Transformation.TreeVisitors;
 using Lucene.Net.Linq.Util;
 using Remotion.Linq;
 using Remotion.Linq.Clauses;
 using Remotion.Linq.Parsing;
+using System.Collections.Generic;
 
 namespace Lucene.Net.Linq.Transformation
 {
@@ -62,7 +62,6 @@ namespace Lucene.Net.Linq.Transformation
             var instance = new QueryModelTransformer();
 
             queryModel.Accept(instance);
-
         }
 
         public override void VisitWhereClause(WhereClause whereClause, QueryModel queryModel, int index)
@@ -87,7 +86,7 @@ namespace Lucene.Net.Linq.Transformation
                 orderByClause.TransformExpressions(visitor.VisitExpression);
                 Log.Trace(m => m("Transformed QueryModel after {0}: {1}", visitor.GetType().Name, queryModel));
             }
-            
+
             ExpandCompositeOrderings(orderByClause);
 
             base.VisitOrderByClause(orderByClause, queryModel, index);
@@ -105,7 +104,7 @@ namespace Lucene.Net.Linq.Transformation
             {
                 if (o.Expression is LuceneCompositeOrderingExpression)
                 {
-                    var ex = (LuceneCompositeOrderingExpression) o.Expression;
+                    var ex = (LuceneCompositeOrderingExpression)o.Expression;
 
                     ex.Fields.Apply(f => orderings.Add(new Ordering(f, o.OrderingDirection)));
                 }

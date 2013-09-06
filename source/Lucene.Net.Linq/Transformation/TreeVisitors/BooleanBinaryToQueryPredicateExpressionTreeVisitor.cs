@@ -1,8 +1,8 @@
-using System.Linq.Expressions;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Util;
 using Lucene.Net.Search;
 using Remotion.Linq.Parsing;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {
@@ -28,8 +28,7 @@ namespace Lucene.Net.Linq.Transformation.TreeVisitors
                 return predicate;
             }
 
-            return new LuceneQueryPredicateExpression(predicate.QueryField, predicate.QueryPattern, Occur.MUST_NOT, predicate.QueryType)
-                    { Boost = predicate.Boost, AllowSpecialCharacters = predicate.AllowSpecialCharacters };
+            return new LuceneQueryPredicateExpression(predicate.QueryField, predicate.QueryPattern, Occur.MUST_NOT, predicate.QueryType) { Boost = predicate.Boost, AllowSpecialCharacters = predicate.AllowSpecialCharacters };
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Lucene.Net.Linq.Mapping;
+﻿using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Util;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Lucene.Net.Linq.Tests.Fluent
 {
@@ -14,7 +14,7 @@ namespace Lucene.Net.Linq.Tests.Fluent
             map.Property(x => x.Id).AsNumericField();
 
             var info = GetMappingInfo<NumericReflectionFieldMapper<Sample>>("Id");
-            
+
             Assert.That(info, Is.InstanceOf<NumericReflectionFieldMapper<Sample>>());
         }
 
@@ -33,7 +33,7 @@ namespace Lucene.Net.Linq.Tests.Fluent
         {
             map.Key(x => x.Id).AsNumericField();
 
-            Assert.That(map.ToDocumentMapper().KeyProperties.ToArray(), Is.EqualTo(new[] {"Id"}));
+            Assert.That(map.ToDocumentMapper().KeyProperties.ToArray(), Is.EqualTo(new[] { "Id" }));
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace Lucene.Net.Linq.Tests.Fluent
 
             Assert.That(info.FieldName, Is.EqualTo("_id_"));
         }
-        
+
         [Test]
         public void NumericWithDefaultPrecisionStep()
         {

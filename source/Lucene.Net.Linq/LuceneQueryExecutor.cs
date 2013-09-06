@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using Common.Logging;
+﻿using Common.Logging;
 using Lucene.Net.Documents;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Linq.ScalarResultHandlers;
@@ -13,6 +9,10 @@ using Lucene.Net.Search;
 using Remotion.Linq;
 using Remotion.Linq.Clauses;
 using Remotion.Linq.Clauses.ExpressionTreeVisitors;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq
 {
@@ -32,19 +32,19 @@ namespace Lucene.Net.Linq
 
         protected override TDocument ConvertDocument(Document doc, IQueryExecutionContext context)
         {
-            var key = (IDocumentKey) null;
+            var key = (IDocumentKey)null;
             if (keyConverter != null)
             {
                 key = keyConverter.ToKey(doc);
             }
 
             var item = newItem(key);
-            
+
             mapper.ToObject(doc, context, item);
-            
+
             return item;
         }
-        
+
         protected override TDocument ConvertDocumentForCustomBoost(Document doc)
         {
             return ConvertDocument(doc, new QueryExecutionContext());
@@ -93,7 +93,7 @@ namespace Lucene.Net.Linq
         private readonly ILog Log = LogManager.GetLogger(typeof(LuceneQueryExecutorBase<>));
 
         private readonly Context context;
-        
+
         protected LuceneQueryExecutorBase(Context context)
         {
             this.context = context;
@@ -241,7 +241,7 @@ namespace Lucene.Net.Linq
 
             var builder = new QueryModelTranslator(this, context);
             builder.Build(queryModel);
-            
+
             Log.Debug(m => m("Lucene query: {0}", builder.Model));
 
             return builder.Model;
@@ -253,13 +253,19 @@ namespace Lucene.Net.Linq
         }
 
         public abstract IFieldMappingInfo GetMappingInfo(string propertyName);
+
         public abstract IEnumerable<string> AllProperties { get; }
+
         public abstract IEnumerable<string> KeyProperties { get; }
+
         public abstract Query CreateMultiFieldQuery(string pattern);
 
         protected abstract IDocumentKey GetDocumentKey(Document doc, IQueryExecutionContext context);
+
         protected abstract TDocument ConvertDocument(Document doc, IQueryExecutionContext context);
+
         protected abstract TDocument ConvertDocumentForCustomBoost(Document doc);
+
         protected abstract void PrepareSearchSettings(IQueryExecutionContext context);
     }
 }

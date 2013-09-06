@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq.Expressions;
-using Lucene.Net.Linq.Clauses.Expressions;
+﻿using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Search;
 using Lucene.Net.Search;
 using Remotion.Linq.Parsing;
+using System;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {
@@ -29,25 +29,28 @@ namespace Lucene.Net.Linq.Transformation.TreeVisitors
 
             if (expression.Left is LuceneQueryFieldExpression)
             {
-                fieldExpression = (LuceneQueryFieldExpression) expression.Left;
+                fieldExpression = (LuceneQueryFieldExpression)expression.Left;
                 pattern = expression.Right;
             }
             else if (expression.Right is LuceneQueryFieldExpression)
             {
-                fieldExpression = (LuceneQueryFieldExpression) expression.Right;
+                fieldExpression = (LuceneQueryFieldExpression)expression.Right;
                 pattern = expression.Left;
 
-                switch(queryType)
+                switch (queryType)
                 {
                     case QueryType.GreaterThan:
                         queryType = QueryType.LessThan;
                         break;
+
                     case QueryType.LessThan:
                         queryType = QueryType.GreaterThan;
                         break;
+
                     case QueryType.GreaterThanOrEqual:
                         queryType = QueryType.LessThanOrEqual;
                         break;
+
                     case QueryType.LessThanOrEqual:
                         queryType = QueryType.GreaterThanOrEqual;
                         break;

@@ -1,6 +1,6 @@
-using System;
 using Remotion.Linq.Clauses;
 using Remotion.Linq.Clauses.ResultOperators;
+using System;
 
 namespace Lucene.Net.Linq.Translation.ResultOperatorHandlers
 {
@@ -62,5 +62,4 @@ namespace Lucene.Net.Linq.Translation.ResultOperatorHandlers
             model.Aggregate = true;
         }
     }
-
 }

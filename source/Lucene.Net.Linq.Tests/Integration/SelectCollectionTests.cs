@@ -1,14 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Lucene.Net.Linq.Tests.Integration
 {
     [TestFixture]
     public class SelectCollectionTests : IntegrationTestBase
     {
-        class TaggedDocument
+        private class TaggedDocument
         {
             public string Name { get; set; }
 

@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using Lucene.Net.Analysis;
-using Lucene.Net.Search;
+﻿using Lucene.Net.Search;
+using System.Collections.Generic;
 
 namespace Lucene.Net.Linq.Mapping
 {

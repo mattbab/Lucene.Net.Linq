@@ -1,9 +1,9 @@
-using System;
-using System.Linq.Expressions;
-using System.Reflection;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Transformation.TreeVisitors;
 using NUnit.Framework;
+using System;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 {
@@ -26,7 +26,7 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
         public void Compare()
         {
             // Compare([doc].Name, "John") > 0
-            var call = 
+            var call =
                 Expression.MakeBinary(
                     ExpressionType.GreaterThan,
                     Expression.Call(methodInfo, field, constant),

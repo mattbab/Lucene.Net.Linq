@@ -1,14 +1,14 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Linq.Search;
 using Lucene.Net.Linq.Util;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
+using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using Version = Lucene.Net.Util.Version;
 
 namespace Lucene.Net.Linq.Mapping
@@ -30,14 +30,13 @@ namespace Lucene.Net.Linq.Mapping
                                      TypeConverter converter, string fieldName, bool caseSensitive, Analyzer analyzer)
             : this(propertyInfo, store, index, termVector, converter, fieldName, caseSensitive, analyzer, 1f)
         {
-
         }
 
         public ReflectionFieldMapper(PropertyInfo propertyInfo, StoreMode store, IndexMode index, TermVectorMode termVector, TypeConverter converter, string fieldName, bool caseSensitive, Analyzer analyzer, float boost)
             : this(propertyInfo, store, index, termVector, converter, fieldName, QueryParser.Operator.OR, caseSensitive, analyzer, boost)
         {
-
         }
+
         public ReflectionFieldMapper(PropertyInfo propertyInfo, StoreMode store, IndexMode index, TermVectorMode termVector, TypeConverter converter, string fieldName, QueryParser.Operator defaultParserOperator, bool caseSensitive, Analyzer analyzer, float boost)
         {
             this.propertyInfo = propertyInfo;
@@ -225,7 +224,7 @@ namespace Lucene.Net.Linq.Mapping
             var terms = Analyzer.GetTerms(FieldName, pattern).ToList();
 
             if (terms.Count > 1) return false;
-            
+
             var termValue = Unescape(terms.Single());
             var term = new Term(FieldName, termValue);
 

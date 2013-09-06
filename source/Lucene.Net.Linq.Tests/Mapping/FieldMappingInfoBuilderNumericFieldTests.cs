@@ -1,9 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using System.Reflection;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Tests.Mapping
 {
@@ -24,7 +24,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
         [Test]
         public void CopyToDocument()
         {
-            CustomValueType = new SampleValueType {TheValue = 1.34d};
+            CustomValueType = new SampleValueType { TheValue = 1.34d };
             var mapper = CreateMapper();
 
             var doc = new Document();
@@ -48,7 +48,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
             mapper.CopyFromDocument(doc, new QueryExecutionContext(), this);
 
             Assert.That(CustomValueType, Is.Not.Null);
-            
+
             Assert.That(CustomValueType.TheValue, Is.EqualTo(value));
         }
 
@@ -66,22 +66,22 @@ namespace Lucene.Net.Linq.Tests.Mapping
         {
             public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
             {
-                return sourceType == typeof (double);
+                return sourceType == typeof(double);
             }
 
             public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
             {
-                return new SampleValueType {TheValue = (double) value};
+                return new SampleValueType { TheValue = (double)value };
             }
 
             public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
             {
-                return destinationType == typeof (double);
+                return destinationType == typeof(double);
             }
 
             public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
             {
-                return ((SampleValueType) value).TheValue;
+                return ((SampleValueType)value).TheValue;
             }
         }
     }

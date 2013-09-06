@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Lucene.Net.Documents;
+using Lucene.Net.Linq.Mapping;
+using Lucene.Net.Search;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using Lucene.Net.Documents;
-using Lucene.Net.Linq.Mapping;
-using Lucene.Net.Search;
 using Version = Lucene.Net.Util.Version;
 
 namespace Lucene.Net.Linq.Fluent
@@ -20,7 +20,7 @@ namespace Lucene.Net.Linq.Fluent
         private readonly ISet<PropertyMap<T>> properties = new HashSet<PropertyMap<T>>(new PartComparer<T>());
         private readonly IDictionary<string, string> documentKeys = new Dictionary<string, string>();
         private ReflectionScoreMapper<T> scoreMapper;
- 
+
         public ClassMap(Version version)
         {
             this.version = version;
@@ -57,7 +57,7 @@ namespace Lucene.Net.Linq.Fluent
         {
             var propInfo = GetMemberInfo<PropertyInfo>(expression.Body);
 
-            var part = new PropertyMap<T>(this, propInfo, isKey:true);
+            var part = new PropertyMap<T>(this, propInfo, isKey: true);
 
             properties.Add(part);
 
@@ -74,7 +74,7 @@ namespace Lucene.Net.Linq.Fluent
 
             scoreMapper = new ReflectionScoreMapper<T>(propInfo);
         }
-        
+
         /// <summary>
         /// Similar to <see cref="DocumentKeyAttribute"/>; adds a
         /// fixed field/value to the mapping that helps ensure that
@@ -97,7 +97,7 @@ namespace Lucene.Net.Linq.Fluent
             foreach (var p in properties)
             {
                 var fieldMapper = p.ToFieldMapper();
-                
+
                 if (p.IsKey)
                 {
                     docMapper.AddKeyField(fieldMapper);
@@ -121,7 +121,7 @@ namespace Lucene.Net.Linq.Fluent
             {
                 docMapper.AddField(scoreMapper);
             }
-            
+
             return docMapper;
         }
 

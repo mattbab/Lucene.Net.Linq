@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Remotion.Linq;
 using Remotion.Linq.Parsing.ExpressionTreeVisitors.Transformation;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Transformation
 {
@@ -19,7 +19,7 @@ namespace Lucene.Net.Linq.Transformation
 
         public ExpressionType[] SupportedExpressionTypes
         {
-            get { return new[] {ExpressionType.Call}; }
+            get { return new[] { ExpressionType.Call }; }
         }
     }
 }

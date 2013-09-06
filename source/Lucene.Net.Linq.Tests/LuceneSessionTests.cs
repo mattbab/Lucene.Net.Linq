@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Linq.Abstractions;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Search;
 using NUnit.Framework;
 using Rhino.Mocks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Tests
 {
@@ -20,7 +20,7 @@ namespace Lucene.Net.Linq.Tests
         private IDocumentModificationDetector<Record> detector;
         private IIndexWriter writer;
         private Context context;
-        
+
         [SetUp]
         public void SetUp()
         {
@@ -32,7 +32,7 @@ namespace Lucene.Net.Linq.Tests
             session = new LuceneSession<Record>(mapper, detector, writer, context, null);
 
             mapper.Expect(m => m.ToKey(Arg<Record>.Is.NotNull))
-                .WhenCalled(mi => mi.ReturnValue = new DocumentKey(new Dictionary<IFieldMappingInfo, object> { { new FakeFieldMappingInfo { FieldName = "Id"}, ((Record)mi.Arguments[0]).Id } }))
+                .WhenCalled(mi => mi.ReturnValue = new DocumentKey(new Dictionary<IFieldMappingInfo, object> { { new FakeFieldMappingInfo { FieldName = "Id" }, ((Record)mi.Arguments[0]).Id } }))
                 .Repeat.Any();
         }
 
@@ -48,10 +48,10 @@ namespace Lucene.Net.Linq.Tests
             var pendingAdditions = session.ConvertPendingAdditions();
 
             Verify();
-            
+
             Assert.That(pendingAdditions.Count(), Is.EqualTo(1));
         }
-        
+
         [Test]
         public void Commit_DeleteAll()
         {
@@ -75,13 +75,13 @@ namespace Lucene.Net.Linq.Tests
 
             var r1 = new Record { Id = "12" };
 
-            var key = new DocumentKey(new Dictionary<IFieldMappingInfo, object> {{ new FakeFieldMappingInfo { FieldName = "Id"}, 12}});
+            var key = new DocumentKey(new Dictionary<IFieldMappingInfo, object> { { new FakeFieldMappingInfo { FieldName = "Id" }, 12 } });
 
             session.Delete(r1);
 
             session.Delete(q1, q2);
 
-            writer.Expect(w => w.DeleteDocuments(new[] {q1, q2, key.ToQuery()}));
+            writer.Expect(w => w.DeleteDocuments(new[] { q1, q2, key.ToQuery() }));
             writer.Expect(w => w.Commit());
 
             session.Commit();
@@ -96,12 +96,12 @@ namespace Lucene.Net.Linq.Tests
         {
             var key = new DocumentKey(new Dictionary<IFieldMappingInfo, object> { { new FakeFieldMappingInfo { FieldName = "Id" }, 1 } });
 
-            var record = new Record {Id = "1"};
+            var record = new Record { Id = "1" };
 
             session.Add(record);
 
             mapper.Expect(m => m.ToDocument(Arg<Record>.Is.Same(record), Arg<Document>.Is.NotNull));
-            writer.Expect(w => w.DeleteDocuments(new[] {key.ToQuery()}));
+            writer.Expect(w => w.DeleteDocuments(new[] { key.ToQuery() }));
             writer.Expect(w => w.AddDocument(Arg<Document>.Is.NotNull));
             writer.Expect(w => w.Commit());
 
@@ -123,7 +123,7 @@ namespace Lucene.Net.Linq.Tests
             writer.Expect(w => w.DeleteDocuments(new[] { deleteQuery }));
             writer.Expect(w => w.AddDocument(Arg<Document>.Is.NotNull));//Matches(doc => doc.GetValues("Name")[0] == "a name")));
             writer.Expect(w => w.Commit());
-            
+
             session.Add(record);
 
             record.Id = "biully";
@@ -170,10 +170,10 @@ namespace Lucene.Net.Linq.Tests
         public void DeleteAllClearsPendingAdditions()
         {
             var r1 = new Record();
-            
+
             session.Add(r1);
             session.DeleteAll();
-            
+
             Assert.That(session.ConvertPendingAdditions, Is.Empty, "Additions");
 
             Verify();
@@ -207,7 +207,7 @@ namespace Lucene.Net.Linq.Tests
             var key = mapper.ToKey(r1);
 
             session.Delete(r1);
-            
+
             Assert.That(session.DocumentTracker.IsMarkedForDeletion(key), Is.True, "IsMarkedForDeletion");
         }
 
@@ -233,7 +233,7 @@ namespace Lucene.Net.Linq.Tests
 
             Assert.That(session.PendingChanges, Is.True, "PendingChanges");
         }
-        
+
         [Test]
         public void Delete_ThrowsOnEmptyKey()
         {
@@ -321,7 +321,7 @@ namespace Lucene.Net.Linq.Tests
             session.DeleteAll();
 
             var thrown = Assert.Throws<AggregateException>(session.Commit);
-            Assert.That(thrown.InnerExceptions, Is.EquivalentTo(new[] {ex1, ex2}));
+            Assert.That(thrown.InnerExceptions, Is.EquivalentTo(new[] { ex1, ex2 }));
         }
 
         private void Verify()

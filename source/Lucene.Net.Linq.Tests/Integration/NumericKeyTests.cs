@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using Lucene.Net.Linq.Mapping;
+﻿using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Lucene.Net.Linq.Tests.Integration
 {
@@ -64,9 +64,9 @@ namespace Lucene.Net.Linq.Tests.Integration
                 session.Add(new Item { Id = 5501 });
                 session.Add(new Item { Id = 5502 });
             }
-            
+
             var item = provider.AsQueryable<Item>().Where(i => i.Id == 5501);
-            
+
             Assert.That(item.Single().Id, Is.EqualTo(5501));
         }
     }

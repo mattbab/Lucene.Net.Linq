@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Lucene.Net.Documents;
+using System;
 using System.Collections;
-using Lucene.Net.Documents;
 
 namespace Lucene.Net.Linq.Mapping
 {
@@ -18,7 +18,7 @@ namespace Lucene.Net.Linq.Mapping
         {
             var values = new ArrayList();
 
-            foreach(var value in source.GetFields(fieldName))
+            foreach (var value in source.GetFields(fieldName))
             {
                 values.Add(ConvertFieldValue(value));
             }

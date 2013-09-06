@@ -1,7 +1,6 @@
-using System.Linq.Expressions;
-using System.Reflection;
 using Lucene.Net.Linq.Transformation.TreeVisitors;
 using NUnit.Framework;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 {
@@ -10,10 +9,10 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
     {
         private static readonly Expression SupportedMethodReplacement = Expression.Constant("replaced supported method");
         private static readonly Expression ConstantReplacement = Expression.Constant("replaced constant");
-        
+
         private TestableVisitor visitor;
 
-        class TestableVisitor : MethodInfoMatchingTreeVisitor
+        private class TestableVisitor : MethodInfoMatchingTreeVisitor
         {
             protected override Expression VisitSupportedMethodCallExpression(MethodCallExpression expression)
             {
@@ -35,7 +34,7 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
         [Test]
         public void DelegatesToBaseByDefault()
         {
-            var call = Expression.Call(typeof (string).GetMethod("Copy"), Expression.Constant("input"));
+            var call = Expression.Call(typeof(string).GetMethod("Copy"), Expression.Constant("input"));
 
             var result = (MethodCallExpression)visitor.VisitExpression(call);
 
@@ -45,7 +44,7 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
         [Test]
         public void DelegatesToSupportedMethodOnMatch()
         {
-            var methodInfo = typeof (string).GetMethod("Copy");
+            var methodInfo = typeof(string).GetMethod("Copy");
             visitor.AddMethod(methodInfo);
             var call = Expression.Call(methodInfo, Expression.Constant("input"));
 

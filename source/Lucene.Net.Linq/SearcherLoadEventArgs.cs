@@ -1,5 +1,5 @@
-using System;
 using Lucene.Net.Search;
+using System;
 
 namespace Lucene.Net.Linq
 {

@@ -1,10 +1,9 @@
-﻿using System.Linq.Expressions;
-using Lucene.Net.Linq.Clauses.Expressions;
-using Lucene.Net.Linq.Tests.Translation.TreeVisitors;
+﻿using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Transformation.TreeVisitors;
 using NUnit.Framework;
 using Remotion.Linq.Clauses;
 using Remotion.Linq.Clauses.Expressions;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 {

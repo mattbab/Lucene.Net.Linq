@@ -1,10 +1,9 @@
-﻿using System;
-using System.Reflection;
-using Lucene.Net.Documents;
-using Lucene.Net.Linq.Mapping;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Linq.Search;
 using Lucene.Net.Search;
 using Lucene.Net.Util;
+using System;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Util
 {
@@ -19,11 +18,11 @@ namespace Lucene.Net.Linq.Util
 
             if (lowerBound == null)
             {
-                lowerBound = (ValueType) upperBound.GetType().GetField("MinValue").GetValue(null);
+                lowerBound = (ValueType)upperBound.GetType().GetField("MinValue").GetValue(null);
             }
             else if (upperBound == null)
             {
-                upperBound = (ValueType) lowerBound.GetType().GetField("MaxValue").GetValue(null);
+                upperBound = (ValueType)lowerBound.GetType().GetField("MaxValue").GetValue(null);
             }
 
             if (lowerBound.GetType() != upperBound.GetType())
@@ -54,7 +53,7 @@ namespace Lucene.Net.Linq.Util
                 return NumericRangeQuery.NewDoubleRange(fieldName, (double)lowerBound, (double)upperBound, minInclusive, maxInclusive);
             }
 
-            throw new NotSupportedException("Unsupported numeric range type " + lowerBound.GetType()); 
+            throw new NotSupportedException("Unsupported numeric range type " + lowerBound.GetType());
         }
 
         /// <summary>
@@ -103,7 +102,7 @@ namespace Lucene.Net.Linq.Util
         {
             if (value is int)
             {
-                return field.SetIntValue((int) value);
+                return field.SetIntValue((int)value);
             }
             if (value is long)
             {
@@ -171,6 +170,5 @@ namespace Lucene.Net.Linq.Util
         {
             return Nullable.GetUnderlyingType(type) ?? type;
         }
-
     }
 }

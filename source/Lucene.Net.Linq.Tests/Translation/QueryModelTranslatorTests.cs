@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
-using Lucene.Net.Linq.Clauses;
+﻿using Lucene.Net.Linq.Clauses;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Linq.Translation;
@@ -10,6 +8,8 @@ using NUnit.Framework;
 using Remotion.Linq;
 using Remotion.Linq.Clauses;
 using Rhino.Mocks;
+using System;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Tests.Translation
 {
@@ -18,7 +18,7 @@ namespace Lucene.Net.Linq.Tests.Translation
     {
         private IFieldMappingInfoProvider mappingProvider;
         private QueryModelTranslator transformer;
-        private readonly QueryModel queryModel = new QueryModel(new MainFromClause("i", typeof(Record), Expression.Constant("r")), new SelectClause(Expression.Constant("a")) );
+        private readonly QueryModel queryModel = new QueryModel(new MainFromClause("i", typeof(Record), Expression.Constant("r")), new SelectClause(Expression.Constant("a")));
         private Context context;
 
         [SetUp]
@@ -96,7 +96,6 @@ namespace Lucene.Net.Linq.Tests.Translation
         [Test]
         public void ConvertsToSort_MultipleClauses()
         {
-
             ExpectSortOnProperty("Name", SortField.STRING, OrderingDirection.Asc);
             ExpectSortOnProperty("Id", SortField.LONG, OrderingDirection.Desc);
 

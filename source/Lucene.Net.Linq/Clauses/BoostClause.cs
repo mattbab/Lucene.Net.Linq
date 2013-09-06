@@ -1,12 +1,13 @@
-﻿using System.Linq.Expressions;
-using Remotion.Linq;
+﻿using Remotion.Linq;
 using Remotion.Linq.Clauses;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Clauses
 {
     internal class BoostClause : ExtensionClause<LambdaExpression>
     {
-        public BoostClause(LambdaExpression expression) : base(expression)
+        public BoostClause(LambdaExpression expression)
+            : base(expression)
         {
         }
 

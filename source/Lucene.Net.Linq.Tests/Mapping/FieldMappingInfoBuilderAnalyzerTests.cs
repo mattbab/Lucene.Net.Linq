@@ -1,9 +1,9 @@
-﻿using System;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Linq.Analysis;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System;
 using Version = Lucene.Net.Util.Version;
 
 namespace Lucene.Net.Linq.Tests.Mapping
@@ -56,10 +56,10 @@ namespace Lucene.Net.Linq.Tests.Mapping
 
             Assert.That(mapper.Analyzer, Is.InstanceOf<KeywordAnalyzer>());
         }
-        
+
         [Field(IndexMode.NotAnalyzed, Analyzer = typeof(StandardAnalyzer))]
         public String CustomAnalyzer { get; set; }
-        
+
         [Test]
         public void UseSpecifiedAnalyzerType()
         {
@@ -92,7 +92,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
         [Test]
         public void AnalyzerMustInheritFromBase()
         {
-            TestDelegate call = () => FieldMappingInfoBuilder.CreateAnalyzer(typeof (object), Version.LUCENE_30);
+            TestDelegate call = () => FieldMappingInfoBuilder.CreateAnalyzer(typeof(object), Version.LUCENE_30);
 
             Assert.That(call, Throws.InvalidOperationException);
         }

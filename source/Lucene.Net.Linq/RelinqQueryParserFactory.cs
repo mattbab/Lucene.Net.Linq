@@ -19,8 +19,8 @@ namespace Lucene.Net.Linq
 
         private static CompoundNodeTypeProvider CreateNodeTypeProvider()
         {
-            var registry = MethodInfoBasedNodeTypeRegistry.CreateFromTypes(typeof (RelinqQueryParserFactory).Assembly.GetTypes());
-            
+            var registry = MethodInfoBasedNodeTypeRegistry.CreateFromTypes(typeof(RelinqQueryParserFactory).Assembly.GetTypes());
+
             var nodeTypeProvider = ExpressionTreeParser.CreateDefaultNodeTypeProvider();
             nodeTypeProvider.InnerProviders.Add(registry);
 
@@ -31,7 +31,7 @@ namespace Lucene.Net.Linq
         /// Creates an <c cref="IExpressionTreeProcessor"/> that will execute
         /// <c cref="AllowSpecialCharactersExpressionTransformer"/>
         /// before executing <c cref="PartialEvaluatingExpressionTreeProcessor"/>
-        /// and other default processors. 
+        /// and other default processors.
         /// </summary>
         internal static IExpressionTreeProcessor CreateExpressionTreeProcessor()
         {

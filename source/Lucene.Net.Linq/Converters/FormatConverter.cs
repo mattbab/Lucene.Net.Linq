@@ -17,8 +17,8 @@ namespace Lucene.Net.Linq.Converters
 
             const BindingFlags bindingFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod;
 
-            var dateTimeSpecificArguments = new[] {typeof (string), typeof (string), typeof (IFormatProvider), typeof (DateTimeStyles)};
-            var genericArguments = new[] {typeof (string), typeof (string), typeof (IFormatProvider)};
+            var dateTimeSpecificArguments = new[] { typeof(string), typeof(string), typeof(IFormatProvider), typeof(DateTimeStyles) };
+            var genericArguments = new[] { typeof(string), typeof(string), typeof(IFormatProvider) };
 
             parseMethod = type.GetMethod("ParseExact", bindingFlags, null, dateTimeSpecificArguments, null)
                 ?? type.GetMethod("ParseExact", bindingFlags, null, genericArguments, null);
@@ -31,12 +31,12 @@ namespace Lucene.Net.Linq.Converters
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            return sourceType == typeof (string);
+            return sourceType == typeof(string);
         }
 
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            return destinationType == typeof (string);
+            return destinationType == typeof(string);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
@@ -46,7 +46,7 @@ namespace Lucene.Net.Linq.Converters
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            var args = new List<object> {value, format, culture};
+            var args = new List<object> { value, format, culture };
 
             if (parseMethod.GetParameters().Length == 4)
             {

@@ -1,6 +1,6 @@
-using System.Linq.Expressions;
 using Remotion.Linq.Clauses.Expressions;
 using Remotion.Linq.Parsing;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Clauses.Expressions
 {
@@ -8,7 +8,7 @@ namespace Lucene.Net.Linq.Clauses.Expressions
     {
         private readonly BinaryExpression expression;
         private readonly float boost;
-        
+
         public BoostBinaryExpression(BinaryExpression expression, float boost)
             : base(expression.Type, (ExpressionType)LuceneExpressionType.BoostBinaryExpression)
         {
@@ -37,7 +37,7 @@ namespace Lucene.Net.Linq.Clauses.Expressions
 
             if (ReferenceEquals(BinaryExpression, newExpression)) return this;
 
-            return new BoostBinaryExpression((BinaryExpression) newExpression, Boost);
+            return new BoostBinaryExpression((BinaryExpression)newExpression, Boost);
         }
     }
 }

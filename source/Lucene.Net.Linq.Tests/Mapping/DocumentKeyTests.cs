@@ -1,9 +1,9 @@
-using System.Collections.Generic;
 using Lucene.Net.Index;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Search;
 using NUnit.Framework;
 using Rhino.Mocks;
+using System.Collections.Generic;
 
 namespace Lucene.Net.Linq.Tests.Mapping
 {
@@ -22,8 +22,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
         [Test]
         public void ToQuery()
         {
-            var key = new DocumentKey(new Dictionary<IFieldMappingInfo, object>
-                                    {{new FakeFieldMappingInfo { FieldName = "id" }, "some value"}});
+            var key = new DocumentKey(new Dictionary<IFieldMappingInfo, object> { { new FakeFieldMappingInfo { FieldName = "id" }, "some value" } });
 
             var query = key.ToQuery();
 

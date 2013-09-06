@@ -1,11 +1,10 @@
-using System;
-using System.ComponentModel;
 using Lucene.Net.Index;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Linq.Search;
-using Lucene.Net.Linq.Util;
-using Lucene.Net.Search;
 using Lucene.Net.QueryParsers;
+using Lucene.Net.Search;
+using System;
+using System.ComponentModel;
 
 namespace Lucene.Net.Linq.Tests
 {
@@ -17,17 +16,20 @@ namespace Lucene.Net.Linq.Tests
         }
 
         public string FieldName { get; set; }
+
         public TypeConverter Converter { get; set; }
+
         public bool IsNumericField { get; set; }
 
         public string PropertyName { get; set; }
+
         public Type PropertyType { get; set; }
 
         public string ConvertToQueryExpression(object value)
         {
             return value.ToString();
         }
-        
+
         public string EscapeSpecialCharacters(string value)
         {
             return QueryParser.Escape(value ?? string.Empty);

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Lucene.Net.Linq.Fluent;
+﻿using Lucene.Net.Linq.Fluent;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 using Version = Lucene.Net.Util.Version;
 
 namespace Lucene.Net.Linq.Tests.Fluent
@@ -27,7 +27,7 @@ namespace Lucene.Net.Linq.Tests.Fluent
         public class SampleMap : ClassMap<Sample>
         {
             public SampleMap()
-                :base(Version.LUCENE_30)
+                : base(Version.LUCENE_30)
             {
             }
         }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Common.Logging;
+﻿using Common.Logging;
 using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
@@ -10,6 +8,8 @@ using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Remotion.Linq.Parsing.Structure;
+using System;
+using System.Linq;
 using Version = Lucene.Net.Util.Version;
 
 namespace Lucene.Net.Linq
@@ -314,10 +314,10 @@ namespace Lucene.Net.Linq
         /// Registers a callback to be invoked when a new IndexSearcher is being initialized.
         /// This method allows an IndexSearcher to be "warmed up" by executing one or more
         /// queries before the instance becomes visible on other threads.
-        /// 
+        ///
         /// While callbacks are being executed, other threads will continue to use the previous
         /// instance of IndexSearcher if this is not the first instance being initialized.
-        /// 
+        ///
         /// If this is the first instance, other threads will block until all callbacks complete.
         /// </summary>
         public void RegisterCacheWarmingCallback<T>(Action<IQueryable<T>> callback, ObjectLookup<T> lookup, IDocumentMapper<T> documentMapper)
@@ -345,7 +345,7 @@ namespace Lucene.Net.Linq
         {
             get
             {
-                lock(sync)
+                lock (sync)
                 {
                     if (writer != null && !writer.IsClosed) return writer;
 
@@ -369,7 +369,7 @@ namespace Lucene.Net.Linq
 
             if (writer != null)
             {
-                writer.Dispose(); 
+                writer.Dispose();
             }
         }
 

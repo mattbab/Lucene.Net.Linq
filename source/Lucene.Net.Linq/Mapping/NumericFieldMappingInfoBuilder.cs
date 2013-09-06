@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Lucene.Net.Linq.Converters;
+using Lucene.Net.Linq.Util;
+using System;
 using System.ComponentModel;
 using System.Reflection;
-using Lucene.Net.Linq.Converters;
-using Lucene.Net.Linq.Util;
 
 namespace Lucene.Net.Linq.Mapping
 {

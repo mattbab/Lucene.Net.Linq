@@ -1,9 +1,9 @@
-﻿using System;
-using System.Reflection;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Linq.Search;
 using Lucene.Net.Search;
+using System;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Mapping
 {
@@ -40,7 +40,7 @@ namespace Lucene.Net.Linq.Mapping
             {
                 return new SortField(SortField.FIELD_SCORE.Field, SortField.FIELD_SCORE.Type, true);
             }
-            
+
             return SortField.FIELD_SCORE;
         }
 
@@ -70,7 +70,9 @@ namespace Lucene.Net.Linq.Mapping
         }
 
         public string PropertyName { get { return propertyInfo.Name; } }
+
         public string FieldName { get { return null; } }
+
         public Analyzer Analyzer { get { return null; } }
     }
 }

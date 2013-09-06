@@ -1,8 +1,8 @@
-﻿using System.Linq.Expressions;
-using Lucene.Net.Linq.Clauses.Expressions;
+﻿using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Search;
 using Lucene.Net.Search;
 using Remotion.Linq.Parsing;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {
@@ -30,7 +30,7 @@ namespace Lucene.Net.Linq.Transformation.TreeVisitors
             {
                 return new LuceneQueryPredicateExpression(queryField, expression.Arguments[0], Occur.MUST, QueryType.Wildcard);
             }
-            
+
             return base.VisitMethodCallExpression(expression);
         }
     }

@@ -24,7 +24,7 @@ namespace Lucene.Net.Linq.Search
             get { return new ComparableWrapper(values[slot]); }
         }
 
-        class ComparableWrapper : IComparable
+        private class ComparableWrapper : IComparable
         {
             private readonly T value;
 

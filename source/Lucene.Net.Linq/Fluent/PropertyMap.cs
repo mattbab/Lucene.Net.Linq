@@ -1,11 +1,11 @@
-﻿using System;
-using System.ComponentModel;
-using System.Reflection;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Linq.Analysis;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.QueryParsers;
+using System;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Fluent
 {
@@ -132,7 +132,7 @@ namespace Lucene.Net.Linq.Fluent
             return IndexMode(Mapping.IndexMode.NotIndexed);
         }
 
-        #endregion
+        #endregion IndexMode settings
 
         /// <summary>
         /// Specify that the field is stored for later retrieval (the default behavior).
@@ -276,6 +276,5 @@ namespace Lucene.Net.Linq.Fluent
 
             this.fieldName = propInfo.Name;
         }
-
     }
 }

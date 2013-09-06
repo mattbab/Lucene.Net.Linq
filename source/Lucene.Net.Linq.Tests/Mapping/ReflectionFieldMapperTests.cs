@@ -1,14 +1,14 @@
-﻿using System;
-using System.ComponentModel;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Linq.Search;
 using Lucene.Net.Linq.Tests.Integration;
+using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using NUnit.Framework;
-using Lucene.Net.QueryParsers;
+using System;
+using System.ComponentModel;
 
 namespace Lucene.Net.Linq.Tests.Mapping
 {
@@ -114,7 +114,6 @@ namespace Lucene.Net.Linq.Tests.Mapping
 
             Assert.That(sort.Field, Is.EqualTo(mapper.FieldName));
             Assert.That(sort.ComparatorSource, Is.InstanceOf<NonGenericConvertableFieldComparatorSource>());
-
         }
 
         public string Text { get; set; }
@@ -139,8 +138,6 @@ namespace Lucene.Net.Linq.Tests.Mapping
                 typeof(ReflectionFieldMapperTests).GetProperty(propertyName),
                 StoreMode.Yes,
                 IndexMode.Analyzed, TermVectorMode.No, converter, propertyName, defaultParseOperaor, caseSensitive, analyzer ?? new KeywordAnalyzer(), 1f);
-
         }
-
     }
 }

@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
 using Remotion.Linq.Clauses.Expressions;
 using Remotion.Linq.Clauses.ResultOperators;
 using Remotion.Linq.Parsing;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {
@@ -16,14 +16,14 @@ namespace Lucene.Net.Linq.Transformation.TreeVisitors
 
             if (operators.Count == 1 && operators[0] is ContainsResultOperator)
             {
-                var op = (ContainsResultOperator) operators[0];
+                var op = (ContainsResultOperator)operators[0];
 
                 var field = expression.QueryModel.MainFromClause.FromExpression;
                 var pattern = op.Item;
 
                 return Expression.MakeBinary(ExpressionType.Equal, field, pattern);
             }
-            
+
             return base.VisitSubQueryExpression(expression);
         }
     }

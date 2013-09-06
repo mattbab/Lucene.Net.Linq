@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
-using System.Reflection;
 using Remotion.Linq;
 using Remotion.Linq.Parsing.Structure.IntermediateModel;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Clauses.ExpressionNodes
 {
@@ -14,7 +14,8 @@ namespace Lucene.Net.Linq.Clauses.ExpressionNodes
 
         private readonly LambdaExpression boostFunction;
 
-        public BoostExpressionNode(MethodCallExpressionParseInfo parseInfo, LambdaExpression boostFunction) : base(parseInfo)
+        public BoostExpressionNode(MethodCallExpressionParseInfo parseInfo, LambdaExpression boostFunction)
+            : base(parseInfo)
         {
             this.boostFunction = boostFunction;
         }

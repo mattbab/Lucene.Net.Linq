@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
-using Lucene.Net.Linq.Util;
+﻿using Lucene.Net.Linq.Util;
 using Remotion.Linq.Parsing;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {
@@ -17,7 +17,7 @@ namespace Lucene.Net.Linq.Transformation.TreeVisitors
 
             if (!(result is ConditionalExpression)) return result;
 
-            expression = (ConditionalExpression) result;
+            expression = (ConditionalExpression)result;
 
             if (!(expression.Test is BinaryExpression)) return expression;
 

@@ -1,6 +1,6 @@
+using NUnit.Framework;
 using System;
 using System.Linq;
-using NUnit.Framework;
 
 namespace Lucene.Net.Linq.Tests.Integration
 {
@@ -60,6 +60,5 @@ namespace Lucene.Net.Linq.Tests.Integration
         {
             Assert.That(documents.SingleOrDefault(d => d.Name == "nonesuch"), Is.Null);
         }
-
     }
 }

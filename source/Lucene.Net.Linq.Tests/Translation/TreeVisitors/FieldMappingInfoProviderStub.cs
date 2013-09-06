@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Lucene.Net.Linq.Mapping;
+﻿using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Search;
+using System;
+using System.Collections.Generic;
 
 namespace Lucene.Net.Linq.Tests.Translation.TreeVisitors
 {
@@ -19,7 +19,7 @@ namespace Lucene.Net.Linq.Tests.Translation.TreeVisitors
 
         public IEnumerable<string> KeyProperties
         {
-            get { return new[] {"Id"}; }
+            get { return new[] { "Id" }; }
         }
 
         public Query CreateMultiFieldQuery(string pattern)

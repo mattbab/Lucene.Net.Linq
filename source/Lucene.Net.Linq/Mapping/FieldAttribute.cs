@@ -1,10 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using Lucene.Net.Analysis;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Util;
+using System;
+using System.ComponentModel;
 using Attribute = System.Attribute;
 
 namespace Lucene.Net.Linq.Mapping
@@ -47,13 +46,13 @@ namespace Lucene.Net.Linq.Mapping
         public Type Converter
         {
             get { return ConverterInstance != null ? ConverterInstance.GetType() : null; }
-            set { ConverterInstance = (TypeConverter) Activator.CreateInstance(value); }
+            set { ConverterInstance = (TypeConverter)Activator.CreateInstance(value); }
         }
 
         /// <summary>
         /// Specifies that the property value, combined with any other properties that also
         /// specify <code>Key = true</code>, represents a unique primary key to the document.
-        /// 
+        ///
         /// Key fields are used to replace or delete documents.
         /// </summary>
         public bool Key { get; set; }
@@ -136,7 +135,7 @@ namespace Lucene.Net.Linq.Mapping
         /// When set, supplies a custom analyzer for this field. The analyzer type
         /// must have either a parameterless public constructor, or a public constructor
         /// that accepts a <see cref="Net.Util.Version"/> argument.
-        /// 
+        ///
         /// When an external Analyzer is provided on <see cref="LuceneDataProvider"/>
         /// methods it will override this setting.
         /// </summary>
@@ -174,7 +173,7 @@ namespace Lucene.Net.Linq.Mapping
             PrecisionStep = NumericUtils.PRECISION_STEP_DEFAULT;
         }
 
-        /// <see cref="NumericRangeQuery"/> 
+        /// <see cref="NumericRangeQuery"/>
         public int PrecisionStep { get; set; }
     }
 
@@ -200,7 +199,7 @@ namespace Lucene.Net.Linq.Mapping
     /// When set on a class, defines a fixed-value key that will always
     /// be used when querying for objects of this type or deleting and
     /// replacing documents with matching keys.
-    /// 
+    ///
     /// This attribute enables multiple object types to be stored in
     /// the same index by ensuring that unrelated documents of other
     /// types will not be returned when querying.

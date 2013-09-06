@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
-using System.Reflection;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Remotion.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {

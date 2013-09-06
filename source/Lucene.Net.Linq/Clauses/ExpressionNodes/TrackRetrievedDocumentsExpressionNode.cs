@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
-using System.Reflection;
 using Remotion.Linq;
 using Remotion.Linq.Parsing.Structure.IntermediateModel;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Clauses.ExpressionNodes
 {

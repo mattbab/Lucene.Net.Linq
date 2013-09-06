@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using Lucene.Net.Linq.Clauses.Expressions;
+﻿using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Clauses.TreeVisitors;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Linq.Search;
-using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Translation.TreeVisitors
 {
@@ -83,7 +82,7 @@ namespace Lucene.Net.Linq.Translation.TreeVisitors
             var pattern = GetPattern(expression, mapping);
 
             var occur = expression.Occur;
-            
+
             if (string.IsNullOrEmpty(pattern))
             {
                 pattern = "*";
@@ -124,9 +123,11 @@ namespace Lucene.Net.Linq.Translation.TreeVisitors
                 case QueryType.Prefix:
                     pattern += "*";
                     break;
+
                 case QueryType.Wildcard:
                     pattern = "*" + pattern + "*";
                     break;
+
                 case QueryType.Suffix:
                     pattern = "*" + pattern;
                     break;
@@ -208,7 +209,7 @@ namespace Lucene.Net.Linq.Translation.TreeVisitors
         private string EvaluateExpressionToString(LuceneQueryPredicateExpression expression, IFieldMappingInfo mapping)
         {
             var result = EvaluateExpression(expression);
-            
+
             var str = mapping == null ? result.ToString() : mapping.ConvertToQueryExpression(result);
 
             if (expression.AllowSpecialCharacters)

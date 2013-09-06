@@ -1,7 +1,7 @@
-using System.Linq;
 using Lucene.Net.Analysis;
 using Lucene.Net.Linq.Analysis;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Lucene.Net.Linq.Tests.Integration
 {
@@ -81,6 +81,7 @@ namespace Lucene.Net.Linq.Tests.Integration
         public class PathDocument
         {
             public string Path { get; set; }
+
             public string Name { get; set; }
         }
     }

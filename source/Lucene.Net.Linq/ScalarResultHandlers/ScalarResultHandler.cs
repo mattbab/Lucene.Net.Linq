@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Lucene.Net.Search;
 using Remotion.Linq.Clauses.ResultOperators;
+using System;
+using System.Collections.Generic;
 
 namespace Lucene.Net.Linq.ScalarResultHandlers
 {
@@ -11,7 +11,7 @@ namespace Lucene.Net.Linq.ScalarResultHandlers
 
         public T Execute<T>(LuceneQueryModel luceneQueryModel, TopFieldDocs hits)
         {
-            return (T) Convert.ChangeType(Execute(luceneQueryModel, hits), typeof (T));
+            return (T)Convert.ChangeType(Execute(luceneQueryModel, hits), typeof(T));
         }
 
         protected abstract object Execute(LuceneQueryModel luceneQueryModel, TopFieldDocs hits);
@@ -21,7 +21,7 @@ namespace Lucene.Net.Linq.ScalarResultHandlers
     {
         public override IEnumerable<Type> SupportedTypes
         {
-            get { return new[] {typeof (CountResultOperator), typeof (LongCountResultOperator)}; }
+            get { return new[] { typeof(CountResultOperator), typeof(LongCountResultOperator) }; }
         }
 
         protected override object Execute(LuceneQueryModel luceneQueryModel, TopFieldDocs hits)

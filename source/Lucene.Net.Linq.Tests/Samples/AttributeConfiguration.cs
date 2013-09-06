@@ -1,13 +1,13 @@
-﻿using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using Lucene.Net.Analysis.Standard;
+﻿using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Linq;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Linq.Tests.Integration;
 using Lucene.Net.Store;
 using NUnit.Framework;
+using System;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
 using Version = Lucene.Net.Util.Version;
 
 namespace Sample
@@ -36,11 +36,11 @@ namespace Sample
         [Field("text", Store = StoreMode.No, Analyzer = typeof(PorterStemAnalyzer))]
         public string SearchText
         {
-            get { return string.Join(" ", new[] {Author, Title, BodyText}); }
+            get { return string.Join(" ", new[] { Author, Title, BodyText }); }
         }
 
         // Stores complex type as string with a given TypeConverter
-        [Field(Converter = typeof (VersionConverter))]
+        [Field(Converter = typeof(VersionConverter))]
         public System.Version Version { get; set; }
 
         // Add IgnoreFieldAttribute to properties that should not be mapped to/from Document
@@ -60,7 +60,7 @@ namespace Sample
             // add some documents
             using (var session = provider.OpenSession<Article>())
             {
-                session.Add(new Article {Author = "John Doe", BodyText = "some body text", PublishDate = DateTimeOffset.UtcNow});
+                session.Add(new Article { Author = "John Doe", BodyText = "some body text", PublishDate = DateTimeOffset.UtcNow });
             }
 
             var articles = provider.AsQueryable<Article>();
@@ -71,7 +71,6 @@ namespace Sample
                                  where a.Author == "John Doe" && a.PublishDate > threshold
                                  orderby a.Title
                                  select a;
-
 
             Console.WriteLine("Articles by John Doe: " + articlesByJohn.Count());
 
@@ -93,7 +92,7 @@ namespace Sample
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            return sourceType == typeof (string);
+            return sourceType == typeof(string);
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)

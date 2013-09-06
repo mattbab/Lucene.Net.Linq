@@ -5,7 +5,8 @@ namespace Lucene.Net.Linq.Fluent
 {
     internal class FluentDocumentMapper<T> : DocumentMapperBase<T>
     {
-        public FluentDocumentMapper(Version version) : base(version)
+        public FluentDocumentMapper(Version version)
+            : base(version)
         {
         }
     }

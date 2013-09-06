@@ -1,9 +1,8 @@
-using System.Collections.Generic;
-using System.Reflection;
 using Lucene.Net.Documents;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Search;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Tests.Mapping
 {

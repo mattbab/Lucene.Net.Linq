@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
-using Lucene.Net.Linq.Transformation.TreeVisitors;
+﻿using Lucene.Net.Linq.Transformation.TreeVisitors;
 using NUnit.Framework;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 {
@@ -120,8 +120,8 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
         public void Recursive()
         {
             // y == null ? null : (x == null ? null : x.CompareTo(y))
-            var concat = Expression.Call(typeof(string).GetMethod("Concat", new[] {typeof(string), typeof(string)}), X, Y);
-            
+            var concat = Expression.Call(typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }), X, Y);
+
             var nested = Expression.Condition(
                 Expression.MakeBinary(ExpressionType.Equal, X, Null),
                 Null,
@@ -152,6 +152,5 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 
             Assert.That(result, Is.SameAs(X));
         }
-
     }
 }

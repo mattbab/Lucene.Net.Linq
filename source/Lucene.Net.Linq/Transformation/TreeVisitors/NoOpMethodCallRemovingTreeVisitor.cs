@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Remotion.Linq.Parsing;
+using System.Collections.Generic;
 using System.Linq.Expressions;
-using Remotion.Linq.Parsing;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {

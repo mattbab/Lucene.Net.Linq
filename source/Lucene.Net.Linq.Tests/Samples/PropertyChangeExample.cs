@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Linq;
 using Lucene.Net.Linq.Fluent;
 using Lucene.Net.Linq.Mapping;
@@ -9,6 +6,9 @@ using Lucene.Net.Linq.Tests.Integration;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
 namespace Sample
 {

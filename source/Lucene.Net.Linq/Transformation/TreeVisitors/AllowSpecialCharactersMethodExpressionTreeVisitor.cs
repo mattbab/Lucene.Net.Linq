@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Remotion.Linq.Clauses.Expressions;
 using Remotion.Linq.Parsing;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {
@@ -14,17 +14,17 @@ namespace Lucene.Net.Linq.Transformation.TreeVisitors
         {
             if (expression is AllowSpecialCharactersExpression)
             {
-                return VisitAllowSpecialCharactersExpression((AllowSpecialCharactersExpression) expression);
+                return VisitAllowSpecialCharactersExpression((AllowSpecialCharactersExpression)expression);
             }
 
             if (expression is LuceneQueryPredicateExpression)
             {
-                return VisitQueryPredicateExpression((LuceneQueryPredicateExpression) expression);
+                return VisitQueryPredicateExpression((LuceneQueryPredicateExpression)expression);
             }
 
             return base.VisitExtensionExpression(expression);
         }
-        
+
         private Expression VisitAllowSpecialCharactersExpression(AllowSpecialCharactersExpression expression)
         {
             allowed = true;

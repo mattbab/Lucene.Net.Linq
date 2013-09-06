@@ -1,6 +1,6 @@
-using System.Linq.Expressions;
 using Remotion.Linq;
 using Remotion.Linq.Clauses;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Clauses
 {

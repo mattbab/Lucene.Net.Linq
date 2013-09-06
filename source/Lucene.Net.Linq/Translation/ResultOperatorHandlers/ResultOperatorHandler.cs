@@ -1,14 +1,15 @@
+using Remotion.Linq.Clauses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Remotion.Linq.Clauses;
 
 namespace Lucene.Net.Linq.Translation.ResultOperatorHandlers
 {
     internal abstract class ResultOperatorHandler
     {
         public abstract IEnumerable<Type> SupportedTypes { get; }
+
         public abstract void Accept(ResultOperatorBase resultOperator, LuceneQueryModel model);
     }
 
@@ -25,12 +26,12 @@ namespace Lucene.Net.Linq.Translation.ResultOperatorHandlers
 
         public sealed override IEnumerable<Type> SupportedTypes
         {
-            get { return new[] {typeof (TOperator)}; }
+            get { return new[] { typeof(TOperator) }; }
         }
 
         public sealed override void Accept(ResultOperatorBase resultOperator, LuceneQueryModel model)
         {
-            genericMethod.Invoke(this, new object[] {resultOperator, model});
+            genericMethod.Invoke(this, new object[] { resultOperator, model });
         }
 
         protected abstract void AcceptInternal(TOperator resultOperator, LuceneQueryModel model);

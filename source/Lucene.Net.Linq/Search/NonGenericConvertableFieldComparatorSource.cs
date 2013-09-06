@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Lucene.Net.Index;
+using Lucene.Net.Search;
+using System;
 using System.ComponentModel;
 using System.Linq;
-using Lucene.Net.Index;
-using Lucene.Net.Search;
 
 namespace Lucene.Net.Linq.Search
 {

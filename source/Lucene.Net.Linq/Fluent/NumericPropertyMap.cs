@@ -1,8 +1,7 @@
-﻿using System;
-using System.Reflection;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Util;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Fluent
 {
@@ -15,7 +14,8 @@ namespace Lucene.Net.Linq.Fluent
     {
         private int precisionStep = NumericUtils.PRECISION_STEP_DEFAULT;
 
-        internal NumericPropertyMap(ClassMap<T> classMap, PropertyInfo propInfo, PropertyMap<T> copy) : base(classMap, propInfo, copy)
+        internal NumericPropertyMap(ClassMap<T> classMap, PropertyInfo propInfo, PropertyMap<T> copy)
+            : base(classMap, propInfo, copy)
         {
         }
 

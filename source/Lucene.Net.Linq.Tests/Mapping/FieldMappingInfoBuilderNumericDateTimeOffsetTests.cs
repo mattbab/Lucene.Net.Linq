@@ -1,8 +1,8 @@
-﻿using System;
-using System.Reflection;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Tests.Mapping
 {
@@ -54,6 +54,5 @@ namespace Lucene.Net.Linq.Tests.Mapping
         {
             return FieldMappingInfoBuilder.Build<FieldMappingInfoBuilderNumericDateTimeOffsetTests>(info);
         }
-
     }
 }

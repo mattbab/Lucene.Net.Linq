@@ -1,7 +1,7 @@
-﻿using System;
-using Lucene.Net.Linq.Fluent;
+﻿using Lucene.Net.Linq.Fluent;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System;
 
 namespace Lucene.Net.Linq.Tests.Fluent
 {

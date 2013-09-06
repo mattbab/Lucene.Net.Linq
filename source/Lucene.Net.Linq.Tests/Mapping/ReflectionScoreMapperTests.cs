@@ -51,6 +51,5 @@ namespace Lucene.Net.Linq.Tests.Mapping
 
             Assert.That(sample.Score, Is.EqualTo(-22f));
         }
-
     }
 }

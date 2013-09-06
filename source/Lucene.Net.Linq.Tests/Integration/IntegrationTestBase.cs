@@ -1,11 +1,11 @@
-﻿using System;
-using System.ComponentModel;
-using System.Globalization;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Index;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Store;
 using NUnit.Framework;
+using System;
+using System.ComponentModel;
+using System.Globalization;
 using Directory = Lucene.Net.Store.Directory;
 using Version = Lucene.Net.Util.Version;
 
@@ -23,7 +23,7 @@ namespace Lucene.Net.Linq.Tests.Integration
         {
             directory = new RAMDirectory();
             writer = new IndexWriter(directory, GetAnalyzer(version), IndexWriter.MaxFieldLength.UNLIMITED);
-            
+
             provider = new LuceneDataProvider(directory, writer.Analyzer, version, writer);
         }
 
@@ -36,6 +36,7 @@ namespace Lucene.Net.Linq.Tests.Integration
         public class SampleDocument
         {
             private static int count;
+
             public SampleDocument()
             {
                 Key = (count++).ToString();
@@ -55,6 +56,7 @@ namespace Lucene.Net.Linq.Tests.Integration
             public long Long { get; set; }
 
             public int? NullableScalar { get; set; }
+
             public bool Flag { get; set; }
 
             [Field("backing_version", Converter = typeof(VersionConverter))]
@@ -97,7 +99,7 @@ namespace Lucene.Net.Linq.Tests.Integration
         {
             public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
             {
-                return sourceType == typeof (string);
+                return sourceType == typeof(string);
             }
 
             public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
@@ -112,7 +114,7 @@ namespace Lucene.Net.Linq.Tests.Integration
 
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
             {
-                var comp = (SampleGenericOnlyComparable) value;
+                var comp = (SampleGenericOnlyComparable)value;
                 return comp != null ? comp.Value.ToString() : null;
             }
         }

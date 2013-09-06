@@ -1,8 +1,8 @@
-using System;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
 using Lucene.Net.Search.Function;
+using System;
 
 namespace Lucene.Net.Linq.Search.Function
 {
@@ -23,7 +23,7 @@ namespace Lucene.Net.Linq.Search.Function
             return new DelegatingScoreProvider(reader, convertFunction, scoreFunction);
         }
 
-        class DelegatingScoreProvider : CustomScoreProvider
+        private class DelegatingScoreProvider : CustomScoreProvider
         {
             private readonly Func<Document, T> convertFunction;
             private readonly Func<T, float> scoreFunction;

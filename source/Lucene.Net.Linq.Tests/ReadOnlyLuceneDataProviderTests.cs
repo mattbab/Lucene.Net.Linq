@@ -11,7 +11,7 @@ namespace Lucene.Net.Linq.Tests
         public void IndexWriterIsNull()
         {
             var provider = new ReadOnlyLuceneDataProvider(new RAMDirectory(), Version.LUCENE_30);
-            
+
             Assert.That(provider.IndexWriter, Is.Null, "provider.IndexWriter");
         }
 

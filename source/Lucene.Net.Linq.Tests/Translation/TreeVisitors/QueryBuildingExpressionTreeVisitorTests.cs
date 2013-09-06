@@ -1,13 +1,10 @@
-﻿using System;
-using System.Linq.Expressions;
-using Lucene.Net.Analysis;
-using Lucene.Net.Linq.Clauses.Expressions;
+﻿using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Search;
-using Lucene.Net.Linq.Tests.Integration;
 using Lucene.Net.Linq.Translation.TreeVisitors;
 using Lucene.Net.Search;
 using NUnit.Framework;
-using Version = Lucene.Net.Util.Version;
+using System;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Tests.Translation.TreeVisitors
 {
@@ -17,7 +14,7 @@ namespace Lucene.Net.Linq.Tests.Translation.TreeVisitors
         private QueryBuildingExpressionTreeVisitor builder;
 
         private static readonly Expression MemberAccessId =
-            new LuceneQueryFieldExpression(typeof (int), "Id");
+            new LuceneQueryFieldExpression(typeof(int), "Id");
 
         private FieldMappingInfoProviderStub fieldMappingInfoProvider;
 
@@ -37,7 +34,7 @@ namespace Lucene.Net.Linq.Tests.Translation.TreeVisitors
         [Test]
         public void ThrowsOnUnRecognizedExpressionType()
         {
-            var expression = (Expression) Expression.MakeBinary(
+            var expression = (Expression)Expression.MakeBinary(
                 ExpressionType.Modulo,
                 MemberAccessId,
                 Expression.Constant(1));

@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Lucene.Net.Linq.Util;
 using Remotion.Linq.Utilities;
+using System;
+using System.Collections.Generic;
 
 namespace Lucene.Net.Linq.ScalarResultHandlers
 {

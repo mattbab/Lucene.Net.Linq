@@ -1,5 +1,5 @@
-﻿using System.IO;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
+using System.IO;
 
 namespace Lucene.Net.Linq.Analysis
 {

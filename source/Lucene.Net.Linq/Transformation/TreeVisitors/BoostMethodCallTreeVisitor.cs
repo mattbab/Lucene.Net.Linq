@@ -1,8 +1,8 @@
+using Lucene.Net.Linq.Clauses.Expressions;
+using Remotion.Linq;
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using Lucene.Net.Linq.Clauses.Expressions;
-using Remotion.Linq;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {
@@ -22,11 +22,10 @@ namespace Lucene.Net.Linq.Transformation.TreeVisitors
         {
             if (stage == 0)
             {
-                return VisitAsField(expression);    
+                return VisitAsField(expression);
             }
 
             return VisitAsBinaryExpression(expression);
-
         }
 
         private Expression VisitAsField(MethodCallExpression expression)

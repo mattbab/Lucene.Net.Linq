@@ -1,7 +1,7 @@
-﻿using System;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
+using System;
 
 namespace Lucene.Net.Linq.Abstractions
 {

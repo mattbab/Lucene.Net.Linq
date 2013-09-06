@@ -1,11 +1,11 @@
-﻿using System;
-using System.ComponentModel;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Linq.Search;
 using Lucene.Net.Search;
 using Lucene.Net.Util;
 using NUnit.Framework;
+using System;
+using System.ComponentModel;
 
 namespace Lucene.Net.Linq.Tests.Mapping
 {
@@ -17,7 +17,9 @@ namespace Lucene.Net.Linq.Tests.Mapping
         public class Sample
         {
             public Int32 Int { get; set; }
+
             public long Long { get; set; }
+
             public Complex Complex { get; set; }
         }
 

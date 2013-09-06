@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Tests.Mapping
 {
@@ -11,6 +11,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
     {
         private PropertyInfo info;
         private Document document;
+
         public IEnumerable<string> Strings { get; set; }
 
         [SetUp]
@@ -26,7 +27,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
             var mapper = CreateMapper();
             Assert.That(mapper.FieldName, Is.EqualTo(info.Name));
         }
-        
+
         [Test]
         public void IEnumerableOfString_CopyToDocument_Null()
         {
@@ -37,7 +38,6 @@ namespace Lucene.Net.Linq.Tests.Mapping
         [Test]
         public void IEnumerableOfString_CopyToDocument_Empty()
         {
-            
             CreateMapper().CopyToDocument(this, document);
             Assert.That(document.GetValues("Strings"), Is.Empty);
         }
@@ -45,9 +45,9 @@ namespace Lucene.Net.Linq.Tests.Mapping
         [Test]
         public void IEnumerableOfString_CopyToDocument_Values()
         {
-            Strings = new[] {"a", "b"};
+            Strings = new[] { "a", "b" };
             CreateMapper().CopyToDocument(this, document);
-            Assert.That(document.GetValues("Strings"), Is.EqualTo(new[] {"a", "b"}));
+            Assert.That(document.GetValues("Strings"), Is.EqualTo(new[] { "a", "b" }));
         }
 
         [Test]

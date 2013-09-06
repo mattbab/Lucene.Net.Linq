@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Lucene.Net.Linq.Mapping;
+using NUnit.Framework;
+using System;
 using System.ComponentModel;
 using System.Reflection;
-using Lucene.Net.Linq.Mapping;
-using NUnit.Framework;
 
 namespace Lucene.Net.Linq.Tests.Mapping
 {
@@ -10,7 +10,9 @@ namespace Lucene.Net.Linq.Tests.Mapping
     public class FieldMappingInfoBuilderTests
     {
         public string StringProperty { get; set; }
+
         public int IntProperty { get; set; }
+
         public ComplexType ComplexProperty { get; set; }
 
         private PropertyInfo stringPropertyInfo;
@@ -88,7 +90,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
         [Test]
         public void CaseSensitive_WhenPropertySet()
         {
-            var flag = FieldMappingInfoBuilder.GetCaseSensitivity(new FieldAttribute {CaseSensitive = true}, null);
+            var flag = FieldMappingInfoBuilder.GetCaseSensitivity(new FieldAttribute { CaseSensitive = true }, null);
             Assert.That(flag, Is.True);
         }
 
@@ -127,6 +129,5 @@ namespace Lucene.Net.Linq.Tests.Mapping
         public class ComplexTypeConverter : TypeConverter
         {
         }
-
     }
 }

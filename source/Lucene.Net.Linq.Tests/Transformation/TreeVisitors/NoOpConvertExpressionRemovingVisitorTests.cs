@@ -1,6 +1,6 @@
-using System.Linq.Expressions;
 using Lucene.Net.Linq.Transformation.TreeVisitors;
 using NUnit.Framework;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 {
@@ -23,7 +23,7 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
                                               Expression.Convert(Expression.Constant((bool?)false), typeof(bool)));
 
             var outer = Expression.MakeBinary(ExpressionType.AndAlso,
-                                          Expression.Convert(Expression.Constant((bool?)false), typeof (bool)), inner);
+                                          Expression.Convert(Expression.Constant((bool?)false), typeof(bool)), inner);
 
             var result = (BinaryExpression)visitor.VisitExpression(outer);
 

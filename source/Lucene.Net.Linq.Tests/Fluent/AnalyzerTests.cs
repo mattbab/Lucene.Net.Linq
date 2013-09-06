@@ -1,9 +1,9 @@
-﻿using System;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Linq.Analysis;
 using Lucene.Net.Linq.Fluent;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System;
 
 namespace Lucene.Net.Linq.Tests.Fluent
 {
@@ -31,7 +31,7 @@ namespace Lucene.Net.Linq.Tests.Fluent
 
             Assert.That(mapper.Analyzer, Is.SameAs(analyzer));
         }
-        
+
         [Test]
         public void SpecifyIndexMode()
         {

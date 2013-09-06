@@ -1,6 +1,6 @@
+using NUnit.Framework;
 using System;
 using System.Linq;
-using NUnit.Framework;
 
 namespace Lucene.Net.Linq.Tests.Integration
 {
@@ -12,8 +12,8 @@ namespace Lucene.Net.Linq.Tests.Integration
         [SetUp]
         public void AddDocuments()
         {
-            AddDocument(new SampleDocument { Name = "sample", Id = "0", Scalar = 2});
-            AddDocument(new SampleDocument { Name = "other", Id = "1", Scalar = 3});
+            AddDocument(new SampleDocument { Name = "sample", Id = "0", Scalar = 2 });
+            AddDocument(new SampleDocument { Name = "other", Id = "1", Scalar = 3 });
 
             documents = provider.AsQueryable<SampleDocument>();
         }

@@ -16,11 +16,17 @@ namespace Lucene.Net.Linq
         }
 
         public QueryExecutionPhase Phase { get; set; }
+
         public IndexSearcher Searcher { get; set; }
+
         public Query Query { get; set; }
+
         public Filter Filter { get; set; }
+
         public TopFieldDocs Hits { get; set; }
+
         public int CurrentHit { get; set; }
+
         public ScoreDoc CurrentScoreDoc { get; set; }
     }
 }

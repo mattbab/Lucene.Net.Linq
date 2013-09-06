@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Lucene.Net.Documents;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using LuceneVersion = Lucene.Net.Util.Version;
 
 namespace Lucene.Net.Linq.Tests.Mapping
@@ -25,7 +25,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
         public void CtrFindsKeyFields()
         {
             var mapper = new ReflectionDocumentMapper<ReflectedDocument>(LuceneVersion.LUCENE_30);
-            Assert.That(mapper.KeyProperties, Is.EquivalentTo(new[] {"Id", "Version", "Number"}));
+            Assert.That(mapper.KeyProperties, Is.EquivalentTo(new[] { "Id", "Version", "Number" }));
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
         {
             var mapper = new ReflectionDocumentMapper<ReflectedDocument>(LuceneVersion.LUCENE_30);
 
-            var result = mapper.ValuesEqual(new[] {"a", "b"}, new List<string> {"a", "b"});
+            var result = mapper.ValuesEqual(new[] { "a", "b" }, new List<string> { "a", "b" });
 
             Assert.That(result, Is.True, "Should be equal when sequences are equal");
         }
@@ -176,7 +176,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
         {
             var mapper = new ReflectionDocumentMapper<ScoreDoc>(LuceneVersion.LUCENE_30);
 
-            Assert.That(mapper.AllProperties.ToArray(), Is.EqualTo(new [] {"Score"}));
+            Assert.That(mapper.AllProperties.ToArray(), Is.EqualTo(new[] { "Score" }));
         }
 
         public class ScoreDoc
@@ -222,8 +222,5 @@ namespace Lucene.Net.Linq.Tests.Mapping
             [Field(Key = true)]
             public string Type { get { return "ReflectedDocumentWithReadOnlyKey"; } }
         }
-
     }
-
-    
 }

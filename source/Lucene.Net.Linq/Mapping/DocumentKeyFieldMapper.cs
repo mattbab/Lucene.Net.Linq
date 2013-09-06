@@ -1,10 +1,10 @@
-﻿using System;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Linq.Search;
-using Lucene.Net.Search;
 using Lucene.Net.QueryParsers;
+using Lucene.Net.Search;
+using System;
 
 namespace Lucene.Net.Linq.Mapping
 {
@@ -18,7 +18,7 @@ namespace Lucene.Net.Linq.Mapping
             this.fieldName = fieldName;
             this.value = value;
         }
-        
+
         public object GetPropertyValue(T source)
         {
             return value;

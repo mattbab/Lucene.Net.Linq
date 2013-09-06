@@ -1,6 +1,6 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Linq;
-using NUnit.Framework;
 
 namespace Lucene.Net.Linq.Tests.Integration
 {
@@ -29,7 +29,7 @@ namespace Lucene.Net.Linq.Tests.Integration
         [Test]
         public void SkipOne_TakeOne()
         {
-           Assert.That(docNames.Skip(1).Take(1).ToArray(), Is.EqualTo(new[] { "b" }));
+            Assert.That(docNames.Skip(1).Take(1).ToArray(), Is.EqualTo(new[] { "b" }));
         }
 
         [Test]

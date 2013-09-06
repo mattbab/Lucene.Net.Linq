@@ -39,7 +39,7 @@ namespace Lucene.Net.Linq
         /// <c>Hits.ScoreDocs[CurrentHit]</c>.
         /// </summary>
         ScoreDoc CurrentScoreDoc { get; }
-        
+
         /// <summary>
         /// Provides a reference to the searcher
         /// to allow custom implementations to
@@ -56,11 +56,11 @@ namespace Lucene.Net.Linq
         Query Query { get; set; }
 
         /// <summary>
-        /// Provides access to the filter that will 
+        /// Provides access to the filter that will
         /// be applied, allowing custom implementations
         /// of <see cref="IDocumentMapper{T}"/> to
         /// customize it.
-        /// 
+        ///
         /// When <see cref="IFieldMappingInfoProvider.KeyProperties"/>
         /// has one or more entries, the filter will
         /// be initialized to match documents that

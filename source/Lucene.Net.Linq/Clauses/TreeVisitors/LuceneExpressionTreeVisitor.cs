@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Remotion.Linq.Clauses.Expressions;
 using Remotion.Linq.Parsing;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Clauses.TreeVisitors
 {
@@ -21,17 +21,17 @@ namespace Lucene.Net.Linq.Clauses.TreeVisitors
 
             if (expression is LuceneQueryFieldExpression)
             {
-                return VisitLuceneQueryFieldExpression((LuceneQueryFieldExpression) expression);
+                return VisitLuceneQueryFieldExpression((LuceneQueryFieldExpression)expression);
             }
 
             if (expression is LuceneQueryPredicateExpression)
             {
-                return VisitLuceneQueryPredicateExpression((LuceneQueryPredicateExpression) expression);
+                return VisitLuceneQueryPredicateExpression((LuceneQueryPredicateExpression)expression);
             }
 
             if (expression is BoostBinaryExpression)
             {
-                return VisitBoostBinaryExpression((BoostBinaryExpression) expression);
+                return VisitBoostBinaryExpression((BoostBinaryExpression)expression);
             }
 
             return base.VisitExtensionExpression(expression);
@@ -43,7 +43,7 @@ namespace Lucene.Net.Linq.Clauses.TreeVisitors
 
             if (ReferenceEquals(expression.BinaryExpression, binary)) return expression;
 
-            return new BoostBinaryExpression((BinaryExpression) binary, expression.Boost);
+            return new BoostBinaryExpression((BinaryExpression)binary, expression.Boost);
         }
 
         protected virtual Expression VisitLuceneQueryPredicateExpression(LuceneQueryPredicateExpression expression)

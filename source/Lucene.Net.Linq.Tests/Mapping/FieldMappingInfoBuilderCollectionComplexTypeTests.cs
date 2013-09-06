@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Linq.Mapping;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Tests.Mapping
 {
@@ -29,7 +29,7 @@ namespace Lucene.Net.Linq.Tests.Mapping
             var mapper = CreateMapper();
             Assert.That(mapper.FieldName, Is.EqualTo(info.Name));
         }
-        
+
         [Test]
         public void IEnumerableOfString_CopyToDocument_Values()
         {
@@ -48,13 +48,12 @@ namespace Lucene.Net.Linq.Tests.Mapping
 
             CreateMapper().CopyFromDocument(document, new QueryExecutionContext(), this);
 
-            Assert.That(Versions, Is.EqualTo(new[] {new Version(5, 6), new Version(5, 7)}));
+            Assert.That(Versions, Is.EqualTo(new[] { new Version(5, 6), new Version(5, 7) }));
         }
 
         private IFieldMapper<FieldMappingInfoBuilderCollectionComplexTypeTests> CreateMapper()
         {
             return FieldMappingInfoBuilder.Build<FieldMappingInfoBuilderCollectionComplexTypeTests>(info);
         }
-        
     }
 }

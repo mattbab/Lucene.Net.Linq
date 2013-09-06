@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Common.Logging;
+﻿using Common.Logging;
 using Lucene.Net.Documents;
 using Lucene.Net.Linq.Abstractions;
 using Lucene.Net.Linq.Mapping;
 using Lucene.Net.Linq.Util;
 using Lucene.Net.Search;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Lucene.Net.Linq
 {
@@ -15,7 +15,7 @@ namespace Lucene.Net.Linq
         private readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         private readonly object sessionLock = new object();
-        
+
         private readonly IDocumentMapper<T> mapper;
         private readonly IIndexWriter writer;
         private readonly Context context;
@@ -44,7 +44,7 @@ namespace Lucene.Net.Linq
 
         public void Add(params T[] items)
         {
-            Add((IEnumerable<T>) items);
+            Add((IEnumerable<T>)items);
         }
 
         public void Add(IEnumerable<T> items)
@@ -145,7 +145,7 @@ namespace Lucene.Net.Linq
                             Log.Error(m => m("Exception in rollback"), ex2);
                             throw new AggregateException(ex, ex2);
                         }
-                        
+
                         throw;
                     }
                 }
@@ -177,7 +177,7 @@ namespace Lucene.Net.Linq
             writer.Commit();
 
             ClearPendingChanges();
-            
+
             context.Reload();
 
             Log.Info(m => m("Commit completed."));
@@ -211,7 +211,7 @@ namespace Lucene.Net.Linq
             var map = new Dictionary<IDocumentKey, Document>();
             var reverse = new List<T>(additions);
             reverse.Reverse();
-            
+
             foreach (var item in reverse)
             {
                 var key = mapper.ToKey(item);
@@ -220,7 +220,7 @@ namespace Lucene.Net.Linq
                     map[key] = ToDocument(item);
                 }
             }
-            
+
             return map;
         }
 
@@ -241,7 +241,7 @@ namespace Lucene.Net.Linq
         internal SessionDocumentTracker DocumentTracker { get { return documentTracker; } }
 
         internal bool DeleteAllFlag { get; private set; }
-        
+
         internal IEnumerable<Query> Deletions { get { return deleteQueries.Union(deleteKeys.Select(k => k.ToQuery())); } }
 
         internal List<T> Additions
@@ -302,7 +302,7 @@ namespace Lucene.Net.Linq
                 tracked = default(T);
 
                 if (key.Empty) return false;
-                
+
                 return byKey.TryGetValue(key, out tracked);
             }
 

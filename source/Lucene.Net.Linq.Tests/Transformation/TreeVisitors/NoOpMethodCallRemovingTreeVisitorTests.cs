@@ -1,7 +1,7 @@
-using System;
-using System.Linq.Expressions;
 using Lucene.Net.Linq.Transformation.TreeVisitors;
 using NUnit.Framework;
+using System;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 {
@@ -23,7 +23,7 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
         [Test]
         public void ToLower()
         {
-            var toLower = typeof (string).GetMethod("ToLower", new Type[0]);
+            var toLower = typeof(string).GetMethod("ToLower", new Type[0]);
 
             // this.Name.ToLower()
             var call = Expression.Call(target, toLower);

@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
 using Lucene.Net.Search;
 using Remotion.Linq.Clauses.Expressions;
 using Remotion.Linq.Parsing;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Clauses.Expressions
 {

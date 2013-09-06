@@ -1,9 +1,9 @@
-using System.Linq.Expressions;
 using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Search;
 using Lucene.Net.Linq.Transformation.TreeVisitors;
 using Lucene.Net.Search;
 using NUnit.Framework;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 {
@@ -14,7 +14,7 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 
         // Query(Name:foo*)
         private static readonly LuceneQueryPredicateExpression predicate = new LuceneQueryPredicateExpression(
-            new LuceneQueryFieldExpression(typeof (string), "Name"),
+            new LuceneQueryFieldExpression(typeof(string), "Name"),
             Expression.Constant("foo"),
             Occur.MUST,
             QueryType.Prefix);
@@ -31,7 +31,7 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
             var call = CreateBinaryExpression(ExpressionType.Equal, false);
 
             var result = visitor.VisitExpression(call) as LuceneQueryPredicateExpression;
-            
+
             AssertResult(result, Occur.MUST_NOT);
         }
 
@@ -64,11 +64,11 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 
             Assert.That(result, Is.SameAs(predicate));
         }
+
         [Test]
         public void RetainsBoostAndAllowSpecialCharacters()
         {
             var call = CreateBinaryExpression(ExpressionType.Equal, false);
-
 
             predicate.AllowSpecialCharacters = true;
             predicate.Boost = 1234f;

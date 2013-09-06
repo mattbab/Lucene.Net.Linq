@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Lucene.Net.Search;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Lucene.Net.Search;
 
 namespace Lucene.Net.Linq
 {
@@ -51,7 +51,7 @@ namespace Lucene.Net.Linq
         internal static IQueryable<T> BoostInternal<T>(this IQueryable<T> source, Expression<Func<T, float>> boostFunction)
         {
             return source.Provider.CreateQuery<T>(
-                Expression.Call(((MethodInfo) MethodBase.GetCurrentMethod()).MakeGenericMethod(typeof (T)),
+                Expression.Call(((MethodInfo)MethodBase.GetCurrentMethod()).MakeGenericMethod(typeof(T)),
                                 source.Expression, boostFunction));
         }
 
@@ -86,24 +86,24 @@ namespace Lucene.Net.Linq
         /// Instructs the query parser that a given query pattern
         /// in a LINQ where clause should not have special characters
         /// (such as <c>*</c>) escaped.
-        /// 
+        ///
         /// Disabling escaping allows prefix, wildcard, phrase and range queries
         /// to be parsed from the <paramref name="queryPattern"/> instead of
         /// treating it as a verbatim search term.
-        /// 
+        ///
         /// </summary>
         /// <example>
         /// The following two samples will produce the same <c cref="Query">Query</c>:
         ///     <c>
         ///         var query = "Foo*";
-        /// 
+        ///
         ///         var results = from doc in documents
         ///         where doc.Title == query.AllowSpecialCharacters()
         ///         select doc;
         ///     </c>
         ///     <c>
         ///         var query = "Foo";
-        /// 
+        ///
         ///         var results = from doc in documents
         ///         where doc.Title.StartsWith(query)
         ///         select doc;

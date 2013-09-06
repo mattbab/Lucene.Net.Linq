@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
-using Lucene.Net.Linq.Clauses.Expressions;
+﻿using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Clauses.TreeVisitors;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {

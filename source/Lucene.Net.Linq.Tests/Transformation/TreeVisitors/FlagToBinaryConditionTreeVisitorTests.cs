@@ -1,7 +1,7 @@
-﻿using System.Linq.Expressions;
-using Lucene.Net.Linq.Clauses.Expressions;
+﻿using Lucene.Net.Linq.Clauses.Expressions;
 using Lucene.Net.Linq.Transformation.TreeVisitors;
 using NUnit.Framework;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
 {
@@ -20,7 +20,7 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
         public void ConvertFlag()
         {
             // "where doc.SomeFlag"
-            var expression = new LuceneQueryFieldExpression(typeof (bool), "SomeFlag");
+            var expression = new LuceneQueryFieldExpression(typeof(bool), "SomeFlag");
 
             var result = visitor.VisitExpression(expression) as BinaryExpression;
 
@@ -120,6 +120,5 @@ namespace Lucene.Net.Linq.Tests.Transformation.TreeVisitors
             Assert.That(result.Right, Is.InstanceOf<ConstantExpression>());
             Assert.That(((ConstantExpression)result.Right).Value, Is.EqualTo(true));
         }
-
     }
 }

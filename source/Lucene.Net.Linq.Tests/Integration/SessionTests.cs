@@ -1,8 +1,8 @@
-using System;
-using System.Linq;
 using Lucene.Net.Analysis;
 using Lucene.Net.Linq.Analysis;
 using NUnit.Framework;
+using System;
+using System.Linq;
 
 namespace Lucene.Net.Linq.Tests.Integration
 {
@@ -26,7 +26,7 @@ namespace Lucene.Net.Linq.Tests.Integration
         public void ReplacesDirtyDocument()
         {
             var session = provider.OpenSession<SampleDocument>();
-            
+
             using (session)
             {
                 var item = (from d in session.Query() where d.Name == "a" select d).Single();
@@ -83,6 +83,7 @@ namespace Lucene.Net.Linq.Tests.Integration
 
             Assert.That(session.Query().Count(d => d.Name == "b"), Is.EqualTo(0), "Should delete document and not re-add it.");
         }
+
         [Test]
         public void ModifiedKeyDeletesByPreviousKey()
         {

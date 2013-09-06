@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Common.Logging;
+﻿using Common.Logging;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Lucene.Net.Linq
 {
@@ -164,7 +164,7 @@ namespace Lucene.Net.Linq
             {
                 this.searcher = searcher;
 
-                lock(typeof(SearcherClientTracker))
+                lock (typeof(SearcherClientTracker))
                 {
                     undisposedTrackers.Add(this);
                 }
@@ -250,5 +250,4 @@ namespace Lucene.Net.Linq
     {
         IndexSearcher Searcher { get; }
     }
-
 }

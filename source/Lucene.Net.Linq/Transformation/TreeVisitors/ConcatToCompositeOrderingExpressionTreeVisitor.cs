@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
-using Lucene.Net.Linq.Clauses.Expressions;
+﻿using Lucene.Net.Linq.Clauses.Expressions;
 using Remotion.Linq.Parsing;
+using System.Linq.Expressions;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {
@@ -16,7 +16,7 @@ namespace Lucene.Net.Linq.Transformation.TreeVisitors
                 var fields = new[] { (LuceneQueryFieldExpression)expression.Arguments[0], (LuceneQueryFieldExpression)expression.Arguments[1] };
                 return new LuceneCompositeOrderingExpression(fields);
             }
-            
+
             return base.VisitMethodCallExpression(expression);
         }
     }

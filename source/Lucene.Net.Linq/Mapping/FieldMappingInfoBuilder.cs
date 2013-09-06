@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
-using Lucene.Net.Analysis;
-using Lucene.Net.Analysis.Standard;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Linq.Analysis;
 using Lucene.Net.Linq.Converters;
 using Lucene.Net.Linq.Util;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 using DateTimeConverter = Lucene.Net.Linq.Converters.DateTimeConverter;
 using Version = Lucene.Net.Util.Version;
 

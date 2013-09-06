@@ -1,7 +1,7 @@
+using Remotion.Linq.Parsing;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using Remotion.Linq.Parsing;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {
@@ -20,7 +20,7 @@ namespace Lucene.Net.Linq.Transformation.TreeVisitors
                              ? expression.Method.GetGenericMethodDefinition()
                              : expression.Method;
 
-            if (!methods.Contains(method)) 
+            if (!methods.Contains(method))
                 return base.VisitMethodCallExpression(expression);
 
             return VisitSupportedMethodCallExpression(expression);

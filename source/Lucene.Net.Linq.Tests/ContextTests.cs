@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Lucene.Net.Analysis;
+﻿using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
@@ -9,6 +7,7 @@ using Lucene.Net.Search;
 using Lucene.Net.Store;
 using NUnit.Framework;
 using Rhino.Mocks;
+using System;
 using Version = Lucene.Net.Util.Version;
 
 namespace Lucene.Net.Linq.Tests
@@ -55,7 +54,7 @@ namespace Lucene.Net.Linq.Tests
         public void DisposeContextDisposesSearcher()
         {
             var searcher = context.CurrentTracker.Searcher;
-            
+
             context.Dispose();
 
             searcher.AssertWasCalled(s => s.Dispose());
@@ -179,7 +178,7 @@ namespace Lucene.Net.Linq.Tests
             Assert.That(context.CurrentTracker.ReferenceCount, Is.EqualTo(0));
         }
 
-        class TestableContext : Context
+        private class TestableContext : Context
         {
             public TestableContext(Directory directory, Analyzer analyzer, Version version, IIndexWriter indexWriter, object transactionLock)
                 : base(directory, transactionLock)

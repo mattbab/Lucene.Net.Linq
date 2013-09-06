@@ -39,7 +39,7 @@ namespace Lucene.Net.Linq.Mapping
         /// commit.
         /// </summary>
         /// <remarks>
-        /// This method has been replaced by <see cref="IDocumentModificationDetector{T}.IsModified"/> 
+        /// This method has been replaced by <see cref="IDocumentModificationDetector{T}.IsModified"/>
         /// in 3.2 and may be removed in future versions.
         /// </remarks>
         bool Equals(T item1, T item2);

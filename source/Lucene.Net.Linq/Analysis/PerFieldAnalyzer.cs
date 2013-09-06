@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Lucene.Net.Analysis;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using Lucene.Net.Analysis;
 
 namespace Lucene.Net.Linq.Analysis
 {
@@ -14,9 +14,9 @@ namespace Lucene.Net.Linq.Analysis
     {
         private readonly Analyzer defaultAnalyzer;
         private readonly IDictionary<string, Analyzer> analyzerMap = new Dictionary<string, Analyzer>();
-        
+
         /// <summary> Constructs with default analyzer.
-        /// 
+        ///
         /// </summary>
         /// <param name="defaultAnalyzer">Any fields not specifically
         /// defined to use a different analyzer will use the one provided here.
@@ -27,7 +27,7 @@ namespace Lucene.Net.Linq.Analysis
         }
 
         /// <summary> Defines an analyzer to use for the specified field.
-        /// 
+        ///
         /// </summary>
         /// <param name="fieldName">field name requiring a non-default analyzer
         /// </param>
@@ -80,7 +80,7 @@ namespace Lucene.Net.Linq.Analysis
         {
             return "PerFieldAnalyzerWrapper(" + analyzerMap + ", default=" + defaultAnalyzer + ")";
         }
-        
+
         /// <summary>
         /// Copy field analyzers from another instance into this instance.
         /// </summary>
@@ -102,7 +102,7 @@ namespace Lucene.Net.Linq.Analysis
         {
             Analyzer analyzer;
 
-            lock(analyzerMap)
+            lock (analyzerMap)
             {
                 if (!analyzerMap.TryGetValue(fieldName, out analyzer))
                 {

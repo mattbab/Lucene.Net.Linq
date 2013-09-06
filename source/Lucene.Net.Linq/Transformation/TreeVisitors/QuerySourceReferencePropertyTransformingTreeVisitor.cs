@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
-using Lucene.Net.Linq.Clauses.Expressions;
+﻿using Lucene.Net.Linq.Clauses.Expressions;
 using Remotion.Linq.Clauses.Expressions;
 using Remotion.Linq.Parsing;
+using System;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {
@@ -18,7 +18,7 @@ namespace Lucene.Net.Linq.Transformation.TreeVisitors
         protected override Expression VisitMemberExpression(MemberExpression expression)
         {
             parent = expression;
-            
+
             var result = base.VisitMemberExpression(expression);
 
             return queryField ?? result;

@@ -1,8 +1,8 @@
+using Lucene.Net.Linq.Util;
+using Lucene.Net.Search;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lucene.Net.Linq.Util;
-using Lucene.Net.Search;
 
 namespace Lucene.Net.Linq.Mapping
 {
@@ -74,7 +74,7 @@ namespace Lucene.Net.Linq.Mapping
         private Query ConvertToQueryExpression(KeyValuePair<string, object> kvp)
         {
             var mapping = mappings[kvp.Key];
-            
+
             var term = mapping.ConvertToQueryExpression(kvp.Value);
             if (string.IsNullOrWhiteSpace(term))
             {
@@ -92,7 +92,7 @@ namespace Lucene.Net.Linq.Mapping
 
             return values.SequenceEqual(other.values);
         }
-        
+
         public bool Equals(IDocumentKey other)
         {
             return Equals((object)other);
@@ -102,8 +102,8 @@ namespace Lucene.Net.Linq.Mapping
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (DocumentKey)) return false;
-            return Equals((DocumentKey) obj);
+            if (obj.GetType() != typeof(DocumentKey)) return false;
+            return Equals((DocumentKey)obj);
         }
 
         public override int GetHashCode()

@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using Lucene.Net.Analysis;
 using Lucene.Net.Index;
 using Lucene.Net.Util;
+using System.Collections.Generic;
 
 namespace Lucene.Net.Linq.Mapping
 {
@@ -15,7 +15,8 @@ namespace Lucene.Net.Linq.Mapping
     {
         private readonly IDictionary<T, ITermFreqVector[]> map = new Dictionary<T, ITermFreqVector[]>();
 
-        public TermFreqVectorDocumentMapper(Version version) : base(version)
+        public TermFreqVectorDocumentMapper(Version version)
+            : base(version)
         {
         }
 
