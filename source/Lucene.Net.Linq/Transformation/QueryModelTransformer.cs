@@ -16,8 +16,8 @@ namespace Lucene.Net.Linq.Transformation
     {
         private static readonly ILog Log = LogManager.GetLogger<QueryModelTransformer>();
 
-        private readonly IEnumerable<ExpressionTreeVisitor> whereSelectClauseVisitors;
         private readonly IEnumerable<ExpressionTreeVisitor> orderingVisitors;
+        private readonly IEnumerable<ExpressionTreeVisitor> whereSelectClauseVisitors;
 
         internal QueryModelTransformer()
             : this(new ExpressionTreeVisitor[]
@@ -64,19 +64,6 @@ namespace Lucene.Net.Linq.Transformation
             queryModel.Accept(instance);
         }
 
-        public override void VisitWhereClause(WhereClause whereClause, QueryModel queryModel, int index)
-        {
-            Log.Trace(m => m("Original QueryModel:     {0}", queryModel));
-
-            foreach (var visitor in whereSelectClauseVisitors)
-            {
-                whereClause.TransformExpressions(visitor.VisitExpression);
-                Log.Trace(m => m("Transformed QueryModel after {0}: {1}", visitor.GetType().Name, queryModel));
-            }
-
-            base.VisitWhereClause(whereClause, queryModel, index);
-        }
-
         public override void VisitOrderByClause(OrderByClause orderByClause, QueryModel queryModel, int index)
         {
             Log.Trace(m => m("Original QueryModel:     {0}", queryModel));
@@ -90,6 +77,19 @@ namespace Lucene.Net.Linq.Transformation
             ExpandCompositeOrderings(orderByClause);
 
             base.VisitOrderByClause(orderByClause, queryModel, index);
+        }
+
+        public override void VisitWhereClause(WhereClause whereClause, QueryModel queryModel, int index)
+        {
+            Log.Trace(m => m("Original QueryModel:     {0}", queryModel));
+
+            foreach (var visitor in whereSelectClauseVisitors)
+            {
+                whereClause.TransformExpressions(visitor.VisitExpression);
+                Log.Trace(m => m("Transformed QueryModel after {0}: {1}", visitor.GetType().Name, queryModel));
+            }
+
+            base.VisitWhereClause(whereClause, queryModel, index);
         }
 
         private void ExpandCompositeOrderings(OrderByClause orderByClause)

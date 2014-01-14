@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Lucene.Net.Linq
 {
-    internal class Context : IDisposable
+    public class Context : IDisposable
     {
         private static readonly ILog Log = LogManager.GetLogger<Context>();
 
@@ -244,10 +244,5 @@ namespace Lucene.Net.Linq
                 searcherReferences.RemoveAll(wr => !wr.IsAlive);
             }
         }
-    }
-
-    internal interface ISearcherHandle : IDisposable
-    {
-        IndexSearcher Searcher { get; }
     }
 }

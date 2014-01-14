@@ -18,9 +18,9 @@ namespace Lucene.Net.Linq
 {
     internal class LuceneQueryExecutor<TDocument> : LuceneQueryExecutorBase<TDocument>
     {
-        private readonly ObjectLookup<TDocument> newItem;
-        private readonly IDocumentMapper<TDocument> mapper;
         private readonly IDocumentKeyConverter keyConverter;
+        private readonly IDocumentMapper<TDocument> mapper;
+        private readonly ObjectLookup<TDocument> newItem;
 
         public LuceneQueryExecutor(Context context, ObjectLookup<TDocument> newItem, IDocumentMapper<TDocument> mapper)
             : base(context)
@@ -28,6 +28,26 @@ namespace Lucene.Net.Linq
             this.newItem = newItem;
             this.mapper = mapper;
             this.keyConverter = mapper as IDocumentKeyConverter;
+        }
+
+        public override IEnumerable<string> AllProperties
+        {
+            get { return mapper.AllProperties; }
+        }
+
+        public override IEnumerable<string> KeyProperties
+        {
+            get { return mapper.KeyProperties; }
+        }
+
+        public override Query CreateMultiFieldQuery(string pattern)
+        {
+            return mapper.CreateMultiFieldQuery(pattern);
+        }
+
+        public override IFieldMappingInfo GetMappingInfo(string propertyName)
+        {
+            return mapper.GetMappingInfo(propertyName);
         }
 
         protected override TDocument ConvertDocument(Document doc, IQueryExecutionContext context)
@@ -62,26 +82,6 @@ namespace Lucene.Net.Linq
             return mapper.ToKey(item);
         }
 
-        public override IFieldMappingInfo GetMappingInfo(string propertyName)
-        {
-            return mapper.GetMappingInfo(propertyName);
-        }
-
-        public override IEnumerable<string> AllProperties
-        {
-            get { return mapper.AllProperties; }
-        }
-
-        public override IEnumerable<string> KeyProperties
-        {
-            get { return mapper.KeyProperties; }
-        }
-
-        public override Query CreateMultiFieldQuery(string pattern)
-        {
-            return mapper.CreateMultiFieldQuery(pattern);
-        }
-
         protected override void PrepareSearchSettings(IQueryExecutionContext context)
         {
             mapper.PrepareSearchSettings(context);
@@ -90,13 +90,69 @@ namespace Lucene.Net.Linq
 
     internal abstract class LuceneQueryExecutorBase<TDocument> : IQueryExecutor, IFieldMappingInfoProvider
     {
-        private readonly ILog Log = LogManager.GetLogger(typeof(LuceneQueryExecutorBase<>));
-
         private readonly Context context;
+        private readonly ILog Log = LogManager.GetLogger(typeof(LuceneQueryExecutorBase<>));
 
         protected LuceneQueryExecutorBase(Context context)
         {
             this.context = context;
+        }
+
+        public abstract IEnumerable<string> AllProperties { get; }
+
+        public abstract IEnumerable<string> KeyProperties { get; }
+
+        public abstract Query CreateMultiFieldQuery(string pattern);
+
+        public IEnumerable<T> ExecuteCollection<T>(QueryModel queryModel)
+        {
+            var itemHolder = new ItemHolder();
+
+            var currentItemExpression = Expression.Property(Expression.Constant(itemHolder), "Current");
+
+            var luceneQueryModel = PrepareQuery(queryModel);
+
+            var mapping = new QuerySourceMapping();
+            mapping.AddMapping(queryModel.MainFromClause, currentItemExpression);
+            queryModel.TransformExpressions(e => ReferenceReplacingExpressionTreeVisitor.ReplaceClauseReferences(e, mapping, throwOnUnmappedReferences: false));
+
+            var projection = GetProjector<T>(queryModel);
+            var projector = projection.Compile();
+
+            var searcherHandle = CheckoutSearcher();
+
+            using (searcherHandle)
+            {
+                var searcher = searcherHandle.Searcher;
+                var skipResults = luceneQueryModel.SkipResults;
+                var maxResults = Math.Min(luceneQueryModel.MaxResults, searcher.MaxDoc - skipResults);
+                var query = luceneQueryModel.Query;
+
+                var scoreFunction = luceneQueryModel.GetCustomScoreFunction<TDocument>();
+                if (scoreFunction != null)
+                {
+                    query = new DelegatingCustomScoreQuery<TDocument>(query, ConvertDocumentForCustomBoost, scoreFunction);
+                }
+
+                var executionContext = new QueryExecutionContext(searcher, query, luceneQueryModel.Filter);
+
+                PrepareSearchSettings(executionContext);
+
+                var hits = searcher.Search(executionContext.Query, executionContext.Filter, maxResults + skipResults, luceneQueryModel.Sort);
+
+                if (luceneQueryModel.Last)
+                {
+                    skipResults = hits.ScoreDocs.Length - 1;
+                    if (skipResults < 0) yield break;
+                }
+
+                var tracker = luceneQueryModel.DocumentTracker as IRetrievedDocumentTracker<TDocument>;
+
+                executionContext.Phase = QueryExecutionPhase.ConvertResults;
+                executionContext.Hits = hits;
+
+                foreach (var p in EnumerateHits(hits, executionContext, searcher, tracker, itemHolder, skipResults, projector)) yield return p;
+            }
         }
 
         public T ExecuteScalar<T>(QueryModel queryModel)
@@ -138,60 +194,24 @@ namespace Lucene.Net.Linq
             return returnDefaultWhenEmpty ? sequence.SingleOrDefault() : sequence.Single();
         }
 
-        public class ItemHolder
+        public abstract IFieldMappingInfo GetMappingInfo(string propertyName);
+
+        protected abstract TDocument ConvertDocument(Document doc, IQueryExecutionContext context);
+
+        protected abstract TDocument ConvertDocumentForCustomBoost(Document doc);
+
+        protected abstract IDocumentKey GetDocumentKey(Document doc, IQueryExecutionContext context);
+
+        protected virtual Expression<Func<TDocument, T>> GetProjector<T>(QueryModel queryModel)
         {
-            public TDocument Current { get; set; }
+            return Expression.Lambda<Func<TDocument, T>>(queryModel.SelectClause.Selector, Expression.Parameter(typeof(TDocument)));
         }
 
-        public IEnumerable<T> ExecuteCollection<T>(QueryModel queryModel)
+        protected abstract void PrepareSearchSettings(IQueryExecutionContext context);
+
+        private ISearcherHandle CheckoutSearcher()
         {
-            var itemHolder = new ItemHolder();
-
-            var currentItemExpression = Expression.Property(Expression.Constant(itemHolder), "Current");
-
-            var luceneQueryModel = PrepareQuery(queryModel);
-
-            var mapping = new QuerySourceMapping();
-            mapping.AddMapping(queryModel.MainFromClause, currentItemExpression);
-            queryModel.TransformExpressions(e => ReferenceReplacingExpressionTreeVisitor.ReplaceClauseReferences(e, mapping, throwOnUnmappedReferences: true));
-
-            var projection = GetProjector<T>(queryModel);
-            var projector = projection.Compile();
-
-            var searcherHandle = CheckoutSearcher();
-
-            using (searcherHandle)
-            {
-                var searcher = searcherHandle.Searcher;
-                var skipResults = luceneQueryModel.SkipResults;
-                var maxResults = Math.Min(luceneQueryModel.MaxResults, searcher.MaxDoc - skipResults);
-                var query = luceneQueryModel.Query;
-
-                var scoreFunction = luceneQueryModel.GetCustomScoreFunction<TDocument>();
-                if (scoreFunction != null)
-                {
-                    query = new DelegatingCustomScoreQuery<TDocument>(query, ConvertDocumentForCustomBoost, scoreFunction);
-                }
-
-                var executionContext = new QueryExecutionContext(searcher, query, luceneQueryModel.Filter);
-
-                PrepareSearchSettings(executionContext);
-
-                var hits = searcher.Search(executionContext.Query, executionContext.Filter, maxResults + skipResults, luceneQueryModel.Sort);
-
-                if (luceneQueryModel.Last)
-                {
-                    skipResults = hits.ScoreDocs.Length - 1;
-                    if (skipResults < 0) yield break;
-                }
-
-                var tracker = luceneQueryModel.DocumentTracker as IRetrievedDocumentTracker<TDocument>;
-
-                executionContext.Phase = QueryExecutionPhase.ConvertResults;
-                executionContext.Hits = hits;
-
-                foreach (var p in EnumerateHits(hits, executionContext, searcher, tracker, itemHolder, skipResults, projector)) yield return p;
-            }
+            return context.CheckoutSearcher();
         }
 
         private IEnumerable<T> EnumerateHits<T>(TopDocs hits, QueryExecutionContext executionContext, Searchable searcher, IRetrievedDocumentTracker<TDocument> tracker, ItemHolder itemHolder, int skipResults, Func<TDocument, T> projector)
@@ -230,11 +250,6 @@ namespace Lucene.Net.Linq
             }
         }
 
-        private ISearcherHandle CheckoutSearcher()
-        {
-            return context.CheckoutSearcher();
-        }
-
         private LuceneQueryModel PrepareQuery(QueryModel queryModel)
         {
             QueryModelTransformer.TransformQueryModel(queryModel);
@@ -247,25 +262,9 @@ namespace Lucene.Net.Linq
             return builder.Model;
         }
 
-        protected virtual Expression<Func<TDocument, T>> GetProjector<T>(QueryModel queryModel)
+        public class ItemHolder
         {
-            return Expression.Lambda<Func<TDocument, T>>(queryModel.SelectClause.Selector, Expression.Parameter(typeof(TDocument)));
+            public TDocument Current { get; set; }
         }
-
-        public abstract IFieldMappingInfo GetMappingInfo(string propertyName);
-
-        public abstract IEnumerable<string> AllProperties { get; }
-
-        public abstract IEnumerable<string> KeyProperties { get; }
-
-        public abstract Query CreateMultiFieldQuery(string pattern);
-
-        protected abstract IDocumentKey GetDocumentKey(Document doc, IQueryExecutionContext context);
-
-        protected abstract TDocument ConvertDocument(Document doc, IQueryExecutionContext context);
-
-        protected abstract TDocument ConvertDocumentForCustomBoost(Document doc);
-
-        protected abstract void PrepareSearchSettings(IQueryExecutionContext context);
     }
 }

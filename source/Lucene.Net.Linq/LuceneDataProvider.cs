@@ -15,37 +15,39 @@ using Version = Lucene.Net.Util.Version;
 namespace Lucene.Net.Linq
 {
     /// <summary>
-    /// Delegate used by <see cref="LuceneDataProvider"/> to create instances of objects that do not
-    /// have public default constructors.
+    /// Delegate used by <see cref="LuceneDataProvider"/> to create instances of objects that do not have public default
+    /// constructors.
     /// </summary>
     /// <typeparam name="T">The type of object <see cref="Document"/>s will be mapped onto.</typeparam>
-    /// <returns>An instance of <paramref name="T"/></returns>
+    /// <returns>An instance of
+    /// <paramref name="T"/></returns>
     public delegate T ObjectFactory<out T>();
 
     /// <summary>
-    /// Delegate used by <see cref="LuceneDataProvider"/> to create or reuse instances of objects
-    /// for advanced clients that may wish to provide caching.
+    /// Delegate used by <see cref="LuceneDataProvider"/> to create or reuse instances of objects for advanced clients
+    /// that may wish to provide caching.
     /// </summary>
     /// <typeparam name="T">The type of object <see cref="Document"/>s will be mapped onto.</typeparam>
-    /// <param name="key">A key that uniquely identifies the <see cref="Document"/>.</param>
-    /// <returns>An instance of <paramref name="T"/></returns>
+    /// <param name="key">A key that uniquely identifies the see cref="Document"/>.</param>
+    /// <returns>An instance of
+    /// <paramref name="T"/></returns>
     public delegate T ObjectLookup<out T>(IDocumentKey key);
 
     /// <summary>
-    /// Provides IQueryable access to a Lucene.Net index as well as an API
-    /// for adding, deleting and replacing documents within atomic transactions.
+    /// Provides IQueryable access to a Lucene.Net index as well as an API for adding, deleting and replacing documents
+    /// within atomic transactions.
     /// </summary>
     public class LuceneDataProvider : IDisposable
     {
         private static readonly ILog Log = LogManager.GetLogger<LuceneDataProvider>();
 
+        private readonly Context context;
         private readonly Directory directory;
         private readonly Analyzer externalAnalyzer;
         private readonly PerFieldAnalyzer perFieldAnalyzer;
-        private readonly Version version;
-        private readonly object sync = new object();
         private readonly IQueryParser queryParser;
-        private readonly Context context;
+        private readonly object sync = new object();
+        private readonly Version version;
         private readonly bool writerIsExternal;
 
         private IIndexWriter writer;
@@ -83,9 +85,9 @@ namespace Lucene.Net.Linq
         }
 
         /// <summary>
-        /// Constructs a new instance with a client provided <see cref="Analyzer"/>.
-        /// If the supplied IndexWriter will be written to outside of this instance of LuceneDataProvider,
-        /// the <paramref name="transactionLock"/> will be used to coordinate writes.
+        /// Constructs a new instance with a client provided <see cref="Analyzer"/>. If the supplied IndexWriter will be
+        /// written to outside of this instance of LuceneDataProvider, the
+        /// <paramref name="transactionLock"/>will be used to coordinate writes.
         /// </summary>
         public LuceneDataProvider(Directory directory, Version version, IIndexWriter externalWriter, object transactionLock)
             : this(directory, null, version, externalWriter, transactionLock)
@@ -93,9 +95,9 @@ namespace Lucene.Net.Linq
         }
 
         /// <summary>
-        /// Constructs a new instance.
-        /// If the supplied IndexWriter will be written to outside of this instance of LuceneDataProvider,
-        /// the <paramref name="transactionLock"/> will be used to coordinate writes.
+        /// Constructs a new instance. If the supplied IndexWriter will be written to outside of this instance of
+        /// LuceneDataProvider, the
+        /// <paramref name="transactionLock"/>will be used to coordinate writes.
         /// </summary>
         public LuceneDataProvider(Directory directory, Analyzer externalAnalyzer, Version version, IIndexWriter externalWriter, object transactionLock)
         {
@@ -111,12 +113,77 @@ namespace Lucene.Net.Linq
         }
 
         /// <summary>
+        /// Retrieves the instance of IndexWriter that will be used by all sessions created by this instance. If the
+        /// current writer has been disposed or a rollback occurred, a new instance will be created, unless the instance
+        /// was passed in as a constructor parameter.
+        /// </summary>
+        public IIndexWriter IndexWriter
+        {
+            get
+            {
+                if (writer != null && !writer.IsClosed) return writer;
+
+                lock (sync)
+                {
+                    if (writer != null && !writer.IsClosed) return writer;
+
+                    if (writerIsExternal)
+                    {
+                        throw new InvalidOperationException("Externally created writer has been closed.");
+                    }
+
+                    writer = GetIndexWriter(perFieldAnalyzer);
+                }
+
+                return writer;
+            }
+        }
+
+        /// <summary>
         /// Settings that enable or disable optional behavior.
         /// </summary>
         public LuceneDataProviderSettings Settings
         {
             get { return context.Settings; }
             set { context.Settings = value; }
+        }
+
+        internal PerFieldAnalyzer Analyzer
+        {
+            get { return perFieldAnalyzer; }
+        }
+
+        internal Context Context
+        {
+            get
+            {
+                return context;
+            }
+        }
+
+        protected virtual IndexDeletionPolicy DeletionPolicy
+        {
+            get { return new KeepOnlyLastCommitDeletionPolicy(); }
+        }
+
+        protected virtual IndexWriter.MaxFieldLength MaxFieldLength
+        {
+            get { return Index.IndexWriter.MaxFieldLength.UNLIMITED; }
+        }
+
+        protected virtual bool ShouldCreateIndex
+        {
+            get
+            {
+                try
+                {
+                    return !directory.ListAll().Any();
+                }
+                catch (NoSuchDirectoryException)
+                {
+                    return true;
+                }
+            }
         }
 
         /// <summary>
@@ -160,8 +227,8 @@ namespace Lucene.Net.Linq
         }
 
         /// <summary>
-        /// Returns an IQueryable implementation where the type being mapped
-        /// from <c cref="Document"/> is constructed by a factory delegate.
+        /// Returns an IQueryable implementation where the type being mapped from <c cref="Document"/> is constructed by
+        /// a factory delegate.
         /// </summary>
         /// <typeparam name="T">The type of object that Document will be mapped onto.</typeparam>
         /// <param name="lookup">Factory method to instantiate new instances of T.</param>
@@ -169,6 +236,18 @@ namespace Lucene.Net.Linq
         public IQueryable<T> AsQueryable<T>(ObjectLookup<T> lookup, IDocumentMapper<T> documentMapper)
         {
             return CreateQueryable(lookup, context, documentMapper);
+        }
+
+        public void Dispose()
+        {
+            context.Dispose();
+
+            if (writerIsExternal) return;
+
+            if (writer != null)
+            {
+                writer.Dispose();
+            }
         }
 
         /// <summary>
@@ -216,7 +295,7 @@ namespace Lucene.Net.Linq
         /// <summary>
         /// Opens a session for staging changes and then committing them atomically.
         /// </summary>
-        /// <param name="lookup">Factory delegate that creates new instances of <typeparamref name="T"/></param>
+        /// <param name="lookup">Factory delegate that creates new instances of typeparamref name="T"/></param>
         /// <param name="documentMapper">Mapper that will convert documents to objects and vice versa.</param>
         /// <typeparam name="T">The type of object that will be mapped to <c cref="Document"/>.</typeparam>
         public ISession<T> OpenSession<T>(ObjectLookup<T> lookup, IDocumentMapper<T> documentMapper)
@@ -238,11 +317,10 @@ namespace Lucene.Net.Linq
         /// <summary>
         /// Opens a session for staging changes and then committing them atomically.
         /// </summary>
-        /// <param name="factory">Factory delegate that creates new instances of <typeparamref name="T"/></param>
+        /// <param name="factory">Factory delegate that creates new instances of typeparamref name="T"/></param>
         /// <param name="documentMapper">Mapper that will convert documents to objects and vice versa.</param>
-        /// <param name="documentModificationDetector">Helper to determine when instances of <typeparamref name="T"/> are modified
-        ///     and need to be updated in the index when the session is committed.
-        /// </param>
+        /// <param name="documentModificationDetector">Helper to determine when instances of <typeparamref name="T"/>
+        /// are modified and need to be updated in the index when the session is committed.</param>
         /// <typeparam name="T">The type of object that will be mapped to <c cref="Document"/>.</typeparam>
         public ISession<T> OpenSession<T>(ObjectFactory<T> factory, IDocumentMapper<T> documentMapper, IDocumentModificationDetector<T> documentModificationDetector)
         {
@@ -252,11 +330,10 @@ namespace Lucene.Net.Linq
         /// <summary>
         /// Opens a session for staging changes and then committing them atomically.
         /// </summary>
-        /// <param name="lookup">Factory delegate that resolves instances of <typeparamref name="T"/></param>
+        /// <param name="lookup">Factory delegate that resolves instances of typeparamref name="T"/></param>
         /// <param name="documentMapper">Mapper that will convert documents to objects and vice versa.</param>
-        /// <param name="documentModificationDetector">Helper to determine when instances of <typeparamref name="T"/> are modified
-        ///     and need to be updated in the index when the session is committed.
-        /// </param>
+        /// <param name="documentModificationDetector">Helper to determine when instances of <typeparamref name="T"/>
+        /// are modified and need to be updated in the index when the session is committed.</param>
         /// <typeparam name="T">The type of object that will be mapped to <c cref="Document"/>.</typeparam>
         public virtual ISession<T> OpenSession<T>(ObjectLookup<T> lookup, IDocumentMapper<T> documentMapper, IDocumentModificationDetector<T> documentModificationDetector)
         {
@@ -271,6 +348,7 @@ namespace Lucene.Net.Linq
         }
 
         /// <summary>
+        ///
         /// <see cref="RegisterCacheWarmingCallback{T}(Action{System.Linq.IQueryable{T}}, ObjectLookup{T}, IDocumentMapper{T})"/>
         /// </summary>
         public void RegisterCacheWarmingCallback<T>(Action<IQueryable<T>> callback) where T : new()
@@ -279,6 +357,7 @@ namespace Lucene.Net.Linq
         }
 
         /// <summary>
+        ///
         /// <see cref="RegisterCacheWarmingCallback{T}(Action{System.Linq.IQueryable{T}}, ObjectLookup{T}, IDocumentMapper{T})"/>
         /// </summary>
         public void RegisterCacheWarmingCallback<T>(Action<IQueryable<T>> callback, IDocumentMapper<T> documentMapper) where T : new()
@@ -287,6 +366,7 @@ namespace Lucene.Net.Linq
         }
 
         /// <summary>
+        ///
         /// <see cref="RegisterCacheWarmingCallback{T}(Action{System.Linq.IQueryable{T}}, ObjectLookup{T}, IDocumentMapper{T})"/>
         /// </summary>
         public void RegisterCacheWarmingCallback<T>(Action<IQueryable<T>> callback, ObjectFactory<T> factory)
@@ -311,12 +391,12 @@ namespace Lucene.Net.Linq
         }
 
         /// <summary>
-        /// Registers a callback to be invoked when a new IndexSearcher is being initialized.
-        /// This method allows an IndexSearcher to be "warmed up" by executing one or more
-        /// queries before the instance becomes visible on other threads.
+        /// Registers a callback to be invoked when a new IndexSearcher is being initialized. This method allows an
+        /// IndexSearcher to be "warmed up" by executing one or more queries before the instance becomes visible on
+        /// other threads.
         ///
-        /// While callbacks are being executed, other threads will continue to use the previous
-        /// instance of IndexSearcher if this is not the first instance being initialized.
+        /// While callbacks are being executed, other threads will continue to use the previous instance of
+        /// IndexSearcher if this is not the first instance being initialized.
         ///
         /// If this is the first instance, other threads will block until all callbacks complete.
         /// </summary>
@@ -335,72 +415,16 @@ namespace Lucene.Net.Linq
         }
 
         /// <summary>
-        /// Retrieves the instance of IndexWriter that will be used by all
-        /// sessions created by this instance. If the current writer has
-        /// been disposed or a rollback occurred, a new instance will be
-        /// created, unless the instance was passed in as a constructor
-        /// parameter.
+        /// Reloads the underlying context to allow for external index updates.
         /// </summary>
-        public IIndexWriter IndexWriter
+        public void Reload()
         {
-            get
-            {
-                lock (sync)
-                {
-                    if (writer != null && !writer.IsClosed) return writer;
-
-                    if (writerIsExternal)
-                    {
-                        throw new InvalidOperationException("Externally created writer has been closed.");
-                    }
-
-                    writer = GetIndexWriter(perFieldAnalyzer);
-                }
-
-                return writer;
-            }
-        }
-
-        public void Dispose()
-        {
-            context.Dispose();
-
-            if (writerIsExternal) return;
-
-            if (writer != null)
-            {
-                writer.Dispose();
-            }
+            context.Reload();
         }
 
         protected virtual IIndexWriter GetIndexWriter(Analyzer analyzer)
         {
             return new IndexWriterAdapter(new IndexWriter(directory, analyzer, ShouldCreateIndex, DeletionPolicy, MaxFieldLength));
-        }
-
-        protected virtual bool ShouldCreateIndex
-        {
-            get
-            {
-                try
-                {
-                    return !directory.ListAll().Any();
-                }
-                catch (NoSuchDirectoryException)
-                {
-                    return true;
-                }
-            }
-        }
-
-        protected virtual IndexDeletionPolicy DeletionPolicy
-        {
-            get { return new KeepOnlyLastCommitDeletionPolicy(); }
-        }
-
-        protected virtual IndexWriter.MaxFieldLength MaxFieldLength
-        {
-            get { return Index.IndexWriter.MaxFieldLength.UNLIMITED; }
         }
 
         private LuceneQueryable<T> CreateQueryable<T>(ObjectLookup<T> factory, Context context, IDocumentMapper<T> mapper)
@@ -423,19 +447,6 @@ namespace Lucene.Net.Linq
             {
                 return newSearcher;
             }
-        }
-
-        internal Context Context
-        {
-            get
-            {
-                return context;
-            }
-        }
-
-        internal PerFieldAnalyzer Analyzer
-        {
-            get { return perFieldAnalyzer; }
         }
     }
 }

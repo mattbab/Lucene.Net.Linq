@@ -3,7 +3,7 @@ using System;
 
 namespace Lucene.Net.Linq
 {
-    internal class SearcherLoadEventArgs : EventArgs
+    public class SearcherLoadEventArgs : EventArgs
     {
         private readonly IndexSearcher indexSearcher;
 

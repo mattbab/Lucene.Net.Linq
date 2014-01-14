@@ -46,6 +46,7 @@ namespace Lucene.Net.Linq.Translation.TreeVisitors
                 case ExpressionType.AndAlso:
                 case ExpressionType.OrElse:
                     return MakeBooleanQuery(expression);
+
                 default:
                     throw new NotSupportedException("BinaryExpression of type " + expression.NodeType + " is not supported.");
             }
@@ -170,10 +171,12 @@ namespace Lucene.Net.Linq.Translation.TreeVisitors
         {
             var result = base.VisitBinaryExpression(expression);
 
+            if (queries.Count < 2)
+                return expression;
+
             var second = (BooleanQuery)queries.Pop();
             var first = (BooleanQuery)queries.Pop();
             var occur = expression.NodeType == ExpressionType.AndAlso ? Occur.MUST : Occur.SHOULD;
-
             var query = new BooleanQuery();
             Combine(query, first, occur);
             Combine(query, second, occur);

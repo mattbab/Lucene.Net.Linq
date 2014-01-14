@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Lucene.Net.Linq.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Lucene.Net.Linq.snk.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -85,6 +91,7 @@
     <Compile Include="Fluent\TermVectorPart.cs" />
     <Compile Include="IQueryExecutionContext.cs" />
     <Compile Include="IRetrievedDocumentTracker.cs" />
+    <Compile Include="ISearcherHandle.cs" />
     <Compile Include="LuceneDataProviderSettings.cs" />
     <Compile Include="Mapping\DocumentKey.cs" />
     <Compile Include="Mapping\DocumentKeyFieldMapper.cs" />
@@ -171,6 +178,7 @@
     <None Include="Lucene.Net.Linq.nuspec">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Lucene.Net.Linq.snk.pfx" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
