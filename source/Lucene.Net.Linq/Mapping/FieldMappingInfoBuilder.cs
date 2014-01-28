@@ -49,34 +49,6 @@ namespace Lucene.Net.Linq.Mapping
             return isCollection ? new CollectionReflectionFieldMapper<T>(mapper, type) : mapper;
         }
 
-        internal static bool IsCollection(Type type, out Type collectionType)
-        {
-            collectionType = type;
-
-            if (type.IsGenericType && typeof(IEnumerable<>).IsAssignableFrom(type.GetGenericTypeDefinition()))
-            {
-                collectionType = type.GetGenericArguments()[0];
-                return true;
-            }
-
-            return false;
-        }
-
-        private static ReflectionFieldMapper<T> BuildPrimitive<T>(PropertyInfo p, Type type, FieldAttribute metadata, Version version, Analyzer externalAnalyzer)
-        {
-            var fieldName = (metadata != null ? metadata.Field : null) ?? p.Name;
-            var converter = GetConverter(p, type, metadata);
-            var store = metadata != null ? metadata.Store : StoreMode.Yes;
-            var index = metadata != null ? metadata.IndexMode : IndexMode.Analyzed;
-            var termVectorMode = metadata != null ? metadata.TermVector : TermVectorMode.No;
-            var boost = metadata != null ? metadata.Boost : 1.0f;
-            var defaultParserOperator = metadata != null ? metadata.DefaultParserOperator : QueryParsers.QueryParser.Operator.OR;
-            var caseSensitive = GetCaseSensitivity(metadata, converter);
-            var analyzer = externalAnalyzer ?? BuildAnalyzer(metadata, converter, version);
-
-            return new ReflectionFieldMapper<T>(p, store, index, termVectorMode, converter, fieldName, defaultParserOperator, caseSensitive, analyzer, boost);
-        }
-
         internal static Analyzer BuildAnalyzer(FieldAttribute metadata, TypeConverter converter, Version version)
         {
             if (metadata != null && metadata.Analyzer != null)
@@ -89,7 +61,31 @@ namespace Lucene.Net.Linq.Mapping
                 return new KeywordAnalyzer();
             }
 
-            return new CaseInsensitiveKeywordAnalyzer();
+            return null; // new CaseInsensitiveKeywordAnalyzer();
+        }
+
+        internal static Analyzer CreateAnalyzer(Type analyzer, Version version)
+        {
+            if (!typeof(Analyzer).IsAssignableFrom(analyzer))
+            {
+                throw new InvalidOperationException("The type " + analyzer + " does not inherit from " + typeof(Analyzer));
+            }
+
+            var versionCtr = analyzer.GetConstructor(new[] { typeof(Version) });
+
+            if (versionCtr != null)
+            {
+                return (Analyzer)versionCtr.Invoke(new object[] { version });
+            }
+
+            var defaultCtr = analyzer.GetConstructor(new Type[0]);
+
+            if (defaultCtr != null)
+            {
+                return (Analyzer)defaultCtr.Invoke(null);
+            }
+
+            throw new InvalidOperationException("The analyzer type " + analyzer + " must have a public default constructor or public constructor that accepts " + typeof(Version));
         }
 
         internal static bool GetCaseSensitivity(FieldAttribute metadata, TypeConverter converter)
@@ -133,28 +129,32 @@ namespace Lucene.Net.Linq.Mapping
             return converter;
         }
 
-        internal static Analyzer CreateAnalyzer(Type analyzer, Version version)
+        internal static bool IsCollection(Type type, out Type collectionType)
         {
-            if (!typeof(Analyzer).IsAssignableFrom(analyzer))
+            collectionType = type;
+
+            if (type.IsGenericType && typeof(IEnumerable<>).IsAssignableFrom(type.GetGenericTypeDefinition()))
             {
-                throw new InvalidOperationException("The type " + analyzer + " does not inherit from " + typeof(Analyzer));
+                collectionType = type.GetGenericArguments()[0];
+                return true;
             }
 
-            var versionCtr = analyzer.GetConstructor(new[] { typeof(Version) });
+            return false;
+        }
 
-            if (versionCtr != null)
-            {
-                return (Analyzer)versionCtr.Invoke(new object[] { version });
-            }
+        private static ReflectionFieldMapper<T> BuildPrimitive<T>(PropertyInfo p, Type type, FieldAttribute metadata, Version version, Analyzer externalAnalyzer)
+        {
+            var fieldName = (metadata != null ? metadata.Field : null) ?? p.Name;
+            var converter = GetConverter(p, type, metadata);
+            var store = metadata != null ? metadata.Store : StoreMode.Yes;
+            var index = metadata != null ? metadata.IndexMode : IndexMode.Analyzed;
+            var termVectorMode = metadata != null ? metadata.TermVector : TermVectorMode.No;
+            var boost = metadata != null ? metadata.Boost : 1.0f;
+            var defaultParserOperator = metadata != null ? metadata.DefaultParserOperator : QueryParsers.QueryParser.Operator.OR;
+            var caseSensitive = GetCaseSensitivity(metadata, converter);
+            var analyzer = BuildAnalyzer(metadata, converter, version) ?? externalAnalyzer; // ?? BuildAnalyzer(metadata, converter, version);
 
-            var defaultCtr = analyzer.GetConstructor(new Type[0]);
-
-            if (defaultCtr != null)
-            {
-                return (Analyzer)defaultCtr.Invoke(null);
-            }
-
-            throw new InvalidOperationException("The analyzer type " + analyzer + " must have a public default constructor or public constructor that accepts " + typeof(Version));
+            return new ReflectionFieldMapper<T>(p, store, index, termVectorMode, converter, fieldName, defaultParserOperator, caseSensitive, analyzer, boost);
         }
     }
 }
