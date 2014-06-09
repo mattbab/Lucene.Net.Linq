@@ -74,7 +74,7 @@ namespace Lucene.Net.Linq
             throw new InvalidOperationException(UnreachableCode);
         }
 
-        public static bool SimilarTo<T>(this T queryPattern)
+        public static bool SimilarTo<T>(this T queryPattern, T value)
         {
             throw new InvalidOperationException(UnreachableCode);
         }
