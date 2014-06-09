@@ -115,51 +115,6 @@ namespace Lucene.Net.Linq.Translation.TreeVisitors
             return base.VisitLuceneQueryPredicateExpression(expression);
         }
 
-        private string GetPattern(LuceneQueryPredicateExpression expression, IFieldMappingInfo mapping)
-        {
-            var pattern = EvaluateExpressionToString(expression, mapping);
-
-            switch (expression.QueryType)
-            {
-                case QueryType.Prefix:
-                    pattern += "*";
-                    break;
-
-                case QueryType.Wildcard:
-                    pattern = "*" + pattern + "*";
-                    break;
-
-                case QueryType.Suffix:
-                    pattern = "*" + pattern;
-                    break;
-            }
-            return pattern;
-        }
-
-        private void AddMultiFieldQuery(LuceneQueryPredicateExpression expression)
-        {
-            var query = new BooleanQuery();
-            query.Add(new BooleanClause(fieldMappingInfoProvider.CreateMultiFieldQuery(GetPattern(expression, null)), expression.Occur));
-            queries.Push(query);
-        }
-
-        private Query CreateRangeQuery(IFieldMappingInfo mapping, QueryType queryType, LuceneQueryPredicateExpression lowerBoundExpression, LuceneQueryPredicateExpression upperBoundExpression)
-        {
-            var lowerBound = lowerBoundExpression == null ? null : EvaluateExpression(lowerBoundExpression);
-            var upperBound = upperBoundExpression == null ? null : EvaluateExpression(upperBoundExpression);
-
-            var lowerRange = RangeType.Inclusive;
-            var upperRange = (queryType == QueryType.LessThan || queryType == QueryType.GreaterThan) ? RangeType.Exclusive : RangeType.Inclusive;
-
-            if (upperBoundExpression == null)
-            {
-                lowerRange = upperRange;
-                upperRange = RangeType.Inclusive;
-            }
-
-            return mapping.CreateRangeQuery(lowerBound, upperBound, lowerRange, upperRange);
-        }
-
         private static Occur Negate(Occur occur)
         {
             return (occur == Occur.MUST_NOT)
@@ -167,23 +122,11 @@ namespace Lucene.Net.Linq.Translation.TreeVisitors
                        : Occur.MUST_NOT;
         }
 
-        private Expression MakeBooleanQuery(BinaryExpression expression)
+        private void AddMultiFieldQuery(LuceneQueryPredicateExpression expression)
         {
-            var result = base.VisitBinaryExpression(expression);
-
-            if (queries.Count < 2)
-                return expression;
-
-            var second = (BooleanQuery)queries.Pop();
-            var first = (BooleanQuery)queries.Pop();
-            var occur = expression.NodeType == ExpressionType.AndAlso ? Occur.MUST : Occur.SHOULD;
             var query = new BooleanQuery();
-            Combine(query, first, occur);
-            Combine(query, second, occur);
-
+            query.Add(new BooleanClause(fieldMappingInfoProvider.CreateMultiFieldQuery(GetPattern(expression, null)), expression.Occur));
             queries.Push(query);
-
-            return result;
         }
 
         private void Combine(BooleanQuery target, BooleanQuery source, Occur occur)
@@ -203,6 +146,23 @@ namespace Lucene.Net.Linq.Translation.TreeVisitors
             }
         }
 
+        private Query CreateRangeQuery(IFieldMappingInfo mapping, QueryType queryType, LuceneQueryPredicateExpression lowerBoundExpression, LuceneQueryPredicateExpression upperBoundExpression)
+        {
+            var lowerBound = lowerBoundExpression == null ? null : EvaluateExpression(lowerBoundExpression);
+            var upperBound = upperBoundExpression == null ? null : EvaluateExpression(upperBoundExpression);
+
+            var lowerRange = RangeType.Inclusive;
+            var upperRange = (queryType == QueryType.LessThan || queryType == QueryType.GreaterThan) ? RangeType.Exclusive : RangeType.Inclusive;
+
+            if (upperBoundExpression == null)
+            {
+                lowerRange = upperRange;
+                upperRange = RangeType.Inclusive;
+            }
+
+            return mapping.CreateRangeQuery(lowerBound, upperBound, lowerRange, upperRange);
+        }
+
         private object EvaluateExpression(LuceneQueryPredicateExpression expression)
         {
             var lambda = Expression.Lambda(expression.QueryPattern).Compile();
@@ -219,6 +179,50 @@ namespace Lucene.Net.Linq.Translation.TreeVisitors
                 return str;
 
             return mapping != null ? mapping.EscapeSpecialCharacters(str) : str;
+        }
+
+        private string GetPattern(LuceneQueryPredicateExpression expression, IFieldMappingInfo mapping)
+        {
+            var pattern = EvaluateExpressionToString(expression, mapping);
+
+            switch (expression.QueryType)
+            {
+                case QueryType.Prefix:
+                    pattern += "*";
+                    break;
+
+                case QueryType.Wildcard:
+                    pattern = "*" + pattern + "*";
+                    break;
+
+                case QueryType.Suffix:
+                    pattern = "*" + pattern;
+                    break;
+
+                case QueryType.Fuzzy:
+                    pattern += "~";
+                    break;
+            }
+            return pattern;
+        }
+
+        private Expression MakeBooleanQuery(BinaryExpression expression)
+        {
+            var result = base.VisitBinaryExpression(expression);
+
+            if (queries.Count < 2)
+                return expression;
+
+            var second = (BooleanQuery)queries.Pop();
+            var first = (BooleanQuery)queries.Pop();
+            var occur = expression.NodeType == ExpressionType.AndAlso ? Occur.MUST : Occur.SHOULD;
+            var query = new BooleanQuery();
+            Combine(query, first, occur);
+            Combine(query, second, occur);
+
+            queries.Push(query);
+
+            return result;
         }
     }
 }

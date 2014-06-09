@@ -7,7 +7,8 @@ using System.Linq.Expressions;
 namespace Lucene.Net.Linq.Transformation.TreeVisitors
 {
     /// <summary>
-    /// Replaces supported method calls like [LuceneQueryFieldExpression].StartsWith("foo") with a LuceneQueryPredicateExpression like [LuceneQueryPredicateExpression](+Field:foo*)
+    /// Replaces supported method calls like [LuceneQueryFieldExpression].StartsWith("foo") with a
+    /// LuceneQueryPredicateExpression like [LuceneQueryPredicateExpression](+Field:foo*)
     /// </summary>
     internal class MethodCallToLuceneQueryPredicateExpressionTreeVisitor : ExpressionTreeVisitor
     {
@@ -29,6 +30,10 @@ namespace Lucene.Net.Linq.Transformation.TreeVisitors
             if (expression.Method.Name == "Contains")
             {
                 return new LuceneQueryPredicateExpression(queryField, expression.Arguments[0], Occur.MUST, QueryType.Wildcard);
+            }
+            if (expression.Method.Name == "SimilarTo")
+            {
+                return new LuceneQueryPredicateExpression(queryField, expression.Arguments[0], Occur.MUST, QueryType.Fuzzy);
             }
 
             return base.VisitMethodCallExpression(expression);

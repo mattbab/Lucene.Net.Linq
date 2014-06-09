@@ -13,6 +13,7 @@ namespace Lucene.Net.Linq.Search
         GreaterThanOrEqual,
         LessThan,
         LessThanOrEqual,
+        Fuzzy
     }
 
     public enum RangeType
@@ -24,15 +25,15 @@ namespace Lucene.Net.Linq.Search
     public static class ExpressionTypeExtentions
     {
         private static readonly IDictionary<ExpressionType, QueryType> typeMap =
-               new Dictionary<ExpressionType, QueryType>
-                {
-                    {ExpressionType.GreaterThan, QueryType.GreaterThan},
-                    {ExpressionType.GreaterThanOrEqual, QueryType.GreaterThanOrEqual},
-                    {ExpressionType.LessThan, QueryType.LessThan},
-                    {ExpressionType.LessThanOrEqual, QueryType.LessThanOrEqual},
-                    {ExpressionType.Equal, QueryType.Default},
-                    {ExpressionType.NotEqual, QueryType.Default},
-                };
+            new Dictionary<ExpressionType, QueryType>
+            {
+                { ExpressionType.GreaterThan, QueryType.GreaterThan },
+                { ExpressionType.GreaterThanOrEqual, QueryType.GreaterThanOrEqual },
+                { ExpressionType.LessThan, QueryType.LessThan },
+                { ExpressionType.LessThanOrEqual, QueryType.LessThanOrEqual },
+                { ExpressionType.Equal, QueryType.Default },
+                { ExpressionType.NotEqual, QueryType.Default },
+            };
 
         public static QueryType ToQueryType(this ExpressionType type)
         {
