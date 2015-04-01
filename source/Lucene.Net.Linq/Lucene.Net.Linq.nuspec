@@ -21,7 +21,7 @@
     </releaseNotes>
     <dependencies>
       <dependency id="Remotion.Linq" version="[1.13.183, 2.0)" />
-      <dependency id="Common.Logging" version="[2.1.2, 3.0)" />
+      <dependency id="Common.Logging" version="[2.2.0, 3.0)" />
       <dependency id="Lucene.Net" version="[3.0.3, 3.6)" />
     </dependencies>
   </metadata>
